@@ -1,6 +1,6 @@
 import { Configuration, Appender, Logger, configure, getLogger } from 'log4js'
 import path from 'path'
-import { resolve } from '@/util'
+import { resolve } from '../util'
 
 export const loggerFilename = resolve('./logs')
 export const appenderFilename = `${loggerFilename}/logger`

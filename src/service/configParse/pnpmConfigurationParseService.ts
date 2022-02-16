@@ -1,5 +1,5 @@
-import AbstractConfigurationParseService from '@/service/configParse/abstractConfigurationParseService'
-import { error } from '@/util/oraUtil'
+import AbstractConfigurationParseService from './abstractConfigurationParseService'
+import { error } from '../../util/oraUtil'
 import fs from 'fs'
 import yaml from 'js-yaml'
 

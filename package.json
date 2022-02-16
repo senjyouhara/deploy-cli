@@ -1,6 +1,6 @@
 {
-  "name": "@hizakura/deploy-cli",
-  "version": "0.0.2",
+  "name": "@kamisiro/deploy-cli",
+  "version": "0.0.1",
   "description": "前端自动化部署脚手架",
   "author": {
     "name": "senjyouhara"
@@ -8,10 +8,14 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "bin": {
-    "@hizakura/deploy-cli": "bin/deploy-cli.js"
+    "@kamisiro/deploy-cli": "bin/deploy-cli.js"
   },
   "repository": {
-    "url": "https://github.com/senjyouhara/deploy-cli"
+    "type": "git",
+    "url": "git+https://github.com/senjyouhara/deploy-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/senjyouhara/deploy-cli/issues"
   },
   "files": [
     "bin",
@@ -19,12 +23,11 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "rimraf lib && rollup -c rollup.config.js -w ",
-    "dev:build": "rimraf lib && rollup -c rollup.config.js --environment NODE_ENV:development",
-    "prod:build": "rimraf lib && rollup -c rollup.config.js --environment NODE_ENV:production",
-    "dev:webpack": "rimraf lib && webpack -w",
-    "dev:webpack:build": "rimraf lib && cross-env NODE_ENV=development webpack",
-    "prod:webpack:build": "rimraf lib && cross-env NODE_ENV=production webpack",
+    "dev": "rimraf lib && webpack -w",
+    "dev:rollup": "rimraf lib && rollup -c rollup.config.js",
+    "dist": "rimraf lib && tsc --emitDeclarationOnly && babel src --out-dir lib --extensions \".js,.ts\"",
+    "build": "rimraf lib && cross-env NODE_ENV=development webpack",
+    "build:rollup": "rimraf lib && rollup -c rollup.config.js",
     "init": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\" ",
     "lint": "prettier --parser=typescript --write src",
     "lint-staged": "lint-staged"
@@ -65,6 +68,7 @@
     "@typescript-eslint/parser": "^5.10.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.3",
+    "babel-plugin-define-patterns": "^1.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-replace-identifiers": "^0.1.1",
     "eslint": "^7.32.0",
@@ -115,7 +119,6 @@
     "ora": "^5.1.0",
     "path": "^0.12.7",
     "path-to-regexp": "^6.2.0",
-    "prettier": "^2.1.1",
-    "simple-git": "^3.1.1"
+    "prettier": "^2.1.1"
   }
 }

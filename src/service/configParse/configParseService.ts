@@ -1,13 +1,13 @@
-import AbstractDeployComponentService from '@/service/abstractDeployComponentService'
+import AbstractDeployComponentService from '../abstractDeployComponentService'
 import path from 'path'
-import LernaConfigurationParseService from '@/service/configParse/lernaConfigurationParseService'
-import PNPMConfigurationParseService from '@/service/configParse/pnpmConfigurationParseService'
+import LernaConfigurationParseService from './lernaConfigurationParseService'
+import PNPMConfigurationParseService from './pnpmConfigurationParseService'
 import fs from 'fs'
-import { info } from '@/util/oraUtil'
-import { logger } from '@/logger'
-import AbstractConfigurationParseService from '@/service/configParse/abstractConfigurationParseService'
-import { ConfigOptions, PathInfoType } from '@/types/type'
-import { resolve } from '@/util'
+import { info } from '../../util/oraUtil'
+import { logger } from '../../logger'
+import AbstractConfigurationParseService from './abstractConfigurationParseService'
+import { ConfigOptions, PathInfoType } from '../../types/type'
+import { resolve } from '../../util'
 
 export default class ConfigParseService extends AbstractDeployComponentService {
   init(data: any) {}

@@ -1,11 +1,11 @@
 import AbstractDeployComponentService from '../abstractDeployComponentService'
-import CosService from '@/service/cos/cosService'
-import { ConfigOptions, CosType } from '@/types/type'
-import TencentCosServiceImpl from '@/service/cos/tencentCosServiceImpl'
-import { logger } from '@/logger'
-import { deployHooksUtils } from '@/config/config'
-import { info } from '@/util/oraUtil'
-import { buildType } from '@/service/build/buildService'
+import CosService from './cosService'
+import { ConfigOptions, CosType } from '../../types/type'
+import TencentCosServiceImpl from './tencentCosServiceImpl'
+import { logger } from '../../logger'
+import { deployHooksUtils } from '../../config/config'
+import { info } from '../../util/oraUtil'
+import { buildType } from '../build/buildService'
 
 export type cosUploadType = { fileName: string; path: string }
 export default class CosServiceImpl extends AbstractDeployComponentService {

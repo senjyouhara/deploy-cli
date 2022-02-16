@@ -1,4 +1,4 @@
-import IDeployComponentService from '@/service/iDeployComponentService'
+import IDeployComponentService from './iDeployComponentService'
 
 export default abstract class AbstractDeployComponentService implements IDeployComponentService {
   protected nextService: AbstractDeployComponentService | undefined

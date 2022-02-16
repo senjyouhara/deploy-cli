@@ -1,5 +1,5 @@
-import CosService from '@/service/cos/cosService'
-import { CosType } from '@/types/type'
+import CosService from './cosService'
+import { CosType } from '../../types/type'
 
 export default abstract class AbstractCosServiceImpl implements CosService {
   protected cosInstance: any = null

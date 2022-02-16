@@ -1,8 +1,8 @@
-import Command from '@/command'
+import Command from './command'
 import minimist from 'minimist'
-import { getVersion } from '@/util'
-import { onProcessEvent } from '@/process'
-import { logger } from '@/logger'
+import { getVersion } from './util'
+import { onProcessEvent } from './process'
+import { logger } from './logger'
 
 export default class EntryService {
   command: Command = new Command()

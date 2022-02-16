@@ -1,14 +1,14 @@
-import NpmInstallServiceImpl from '@/service/install/npmInstallServiceImpl'
-import PnpmInstallServiceImpl from '@/service/install/pnpmInstallServiceImpl'
-import YarnInstallServiceImpl from '@/service/install/yarnInstallServiceImpl'
-import InstallService from '@/service/install/installService'
-import { error, info, loading, succeed } from '@/util/oraUtil'
-import AbstractDeployComponentService from '@/service/abstractDeployComponentService'
-import { ConfigOptions, PathInfoType } from '@/types/type'
-import { logger } from '@/logger'
+import NpmInstallServiceImpl from './npmInstallServiceImpl'
+import PnpmInstallServiceImpl from './pnpmInstallServiceImpl'
+import YarnInstallServiceImpl from './yarnInstallServiceImpl'
+import InstallService from './installService'
+import { error, info, loading, succeed } from '../../util/oraUtil'
+import AbstractDeployComponentService from '../abstractDeployComponentService'
+import { ConfigOptions, PathInfoType } from '../../types/type'
+import { logger } from '../../logger'
 // @ts-ignore
 import CMD from 'node-cmd'
-import { deployHooks, deployHooksUtils } from '@/config/config'
+import { deployHooks, deployHooksUtils } from '../../config/config'
 
 export default class InstallServiceImpl extends AbstractDeployComponentService implements InstallService {
   service: InstallService

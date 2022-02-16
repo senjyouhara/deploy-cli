@@ -1,4 +1,4 @@
-import AbstractInstallServiceImpl from '@/service/install/abstractInstallServiceImpl'
+import AbstractInstallServiceImpl from './abstractInstallServiceImpl'
 
 export default class NpmInstallServiceImpl extends AbstractInstallServiceImpl {
   type = 'npm'

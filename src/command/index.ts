@@ -1,7 +1,7 @@
-import InitCommand from '@/command/initCommand'
-import DeployCommand from '@/command/deployCommand'
-import IBaseCommand from '@/command/baseCommand'
-import { error } from '@/util/oraUtil'
+import InitCommand from './initCommand'
+import DeployCommand from './deployCommand'
+import IBaseCommand from './baseCommand'
+import { error } from '../util/oraUtil'
 
 export default class Command {
   commandList: IBaseCommand[] = []

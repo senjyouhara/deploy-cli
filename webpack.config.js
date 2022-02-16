@@ -136,12 +136,12 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.PKG_VERSION': JSON.stringify(require('./package').version),
-      'process.env.NAME': JSON.stringify(require('./package').name),
-      PKG_VERSION: JSON.stringify(require('./package').version),
-      NAME: JSON.stringify(require('./package').name),
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env.PKG_VERSION': JSON.stringify(require('./package').version),
+    //   'process.env.NAME': JSON.stringify(require('./package').name),
+    //   PKG_VERSION: JSON.stringify(require('./package').version),
+    //   NAME: JSON.stringify(require('./package').name),
+    // }),
     new ProgressBarPlugin(),
   ],
 }

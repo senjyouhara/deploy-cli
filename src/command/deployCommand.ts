@@ -1,6 +1,6 @@
-import DeployService from '@/service/deployService'
-import BaseCommand from '@/command/baseCommand'
-import { DeployCommandType } from '@/types/type'
+import DeployService from '../service/deployService'
+import BaseCommand from './baseCommand'
+import { DeployCommandType } from '../types/type'
 
 export default class DeployCommand implements BaseCommand {
   deployService: DeployService = new DeployService()

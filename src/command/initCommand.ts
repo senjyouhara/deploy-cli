@@ -1,12 +1,12 @@
-import { platformConfig } from '@/config/config'
-import { ConfigOptions, InitCommandType } from '@/types/type'
+import { platformConfig } from '../config/config'
+import { ConfigOptions, InitCommandType } from '../types/type'
 import inquirer from 'inquirer'
-import ConfigProcessService from '@/service/configProcessService'
-import BaseCommand from '@/command/baseCommand'
+import ConfigProcessService from '../service/configProcessService'
+import BaseCommand from './baseCommand'
 import fs from 'fs'
 import path from 'path'
-import { getFileName, join } from '@/util'
-import { error } from '@/util/oraUtil'
+import { getFileName, join } from '../util'
+import { error } from '../util/oraUtil'
 
 export default class InitCommand implements BaseCommand {
   configProcessService: ConfigProcessService = new ConfigProcessService()

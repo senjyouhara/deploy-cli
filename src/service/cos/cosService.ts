@@ -1,4 +1,4 @@
-import { CosType } from '@/types/type'
+import { CosType } from '../../types/type'
 
 export default interface CosService {
   init(cosInfo?: CosType): void

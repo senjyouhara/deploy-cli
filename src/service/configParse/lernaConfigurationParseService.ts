@@ -1,5 +1,5 @@
-import { error } from '@/util/oraUtil'
-import AbstractConfigurationParseService from '@/service/configParse/abstractConfigurationParseService'
+import { error } from '../../util/oraUtil'
+import AbstractConfigurationParseService from './abstractConfigurationParseService'
 
 export default class LernaConfigurationParseService extends AbstractConfigurationParseService {
   type = 'lerna'

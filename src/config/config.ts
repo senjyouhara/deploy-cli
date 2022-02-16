@@ -1,11 +1,10 @@
 import path from 'path'
 import fs from 'fs'
 import os from 'os'
-import { getFileName, join } from '@/util'
-import { ConfigOptions, PathInfoType } from '@/types/type'
-import { buildType, runScriptType } from '@/service/build/buildService'
-import { error, succeed } from '@/util/oraUtil'
-import { cosUploadType } from '@/service/cos/cosServiceImpl'
+import { getFileName, join } from '../util'
+import { ConfigOptions, PathInfoType } from '../types/type'
+import { buildType, runScriptType } from '../service/build/buildService'
+import { error, succeed } from '../util/oraUtil'
 
 function getUserPackage() {
   return join(process.cwd(), 'package.json')

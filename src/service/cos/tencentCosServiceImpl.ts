@@ -1,10 +1,10 @@
-import AbstractCosServiceImpl from '@/service/cos/abstractCosServiceImpl'
-import { CosTempAuthType, CosType } from '@/types/type'
+import AbstractCosServiceImpl from './abstractCosServiceImpl'
+import { CosTempAuthType, CosType } from '../../types/type'
 import Cos from 'cos-nodejs-sdk-v5'
-import { error } from '@/util/oraUtil'
+import { error } from '../../util/oraUtil'
 import fs from 'fs'
-import { logger } from '@/logger'
-import { getCosInfo } from '@/api/authApi'
+import { logger } from '../../logger'
+import { getCosInfo } from '../../api/authApi'
 
 export default class TencentCosServiceImpl extends AbstractCosServiceImpl {
   COS_UPLOAD_PATH = '/web/temp/'

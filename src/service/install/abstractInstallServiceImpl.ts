@@ -1,9 +1,9 @@
-import InstallService from '@/service/install/installService'
+import InstallService from './installService'
 // @ts-ignore
 import CMD from 'node-cmd'
 import * as fs from 'fs'
-import { succeed } from '@/util/oraUtil'
-import { logger } from '@/logger'
+import { succeed } from '../../util/oraUtil'
+import { logger } from '../../logger'
 export default abstract class AbstractInstallServiceImpl implements InstallService {
   protected type = ''
   protected command = ''

@@ -1,11 +1,11 @@
-import { saveFile } from '@/util/ioUtil'
-import { ConfigOptions } from '@/types/type'
-import { getFileName } from '@/util'
+import { saveFile } from '../util/ioUtil'
+import { ConfigOptions } from '../types/type'
+import { getFileName } from '../util'
 import path from 'path'
-import { loading } from '@/util/oraUtil'
+import { loading } from '../util/oraUtil'
 import chalk from 'chalk'
-import { defineConfig, platformConfig } from '@/config/config'
-import { logger } from '@/logger'
+import { defineConfig, platformConfig } from '../config/config'
+import { logger } from '../logger'
 
 export default class ConfigProcessService {
   checkConfig(answer: ConfigOptions) {
