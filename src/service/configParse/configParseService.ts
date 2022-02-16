@@ -7,7 +7,7 @@ import { info } from '../../util/oraUtil'
 import { logger } from '../../logger'
 import AbstractConfigurationParseService from './abstractConfigurationParseService'
 import { ConfigOptions, PathInfoType } from '../../types/type'
-import { resolve } from '../../util'
+import { join, resolve } from '../../util'
 
 export default class ConfigParseService extends AbstractDeployComponentService {
   init(data: any) {}
@@ -30,7 +30,7 @@ export default class ConfigParseService extends AbstractDeployComponentService {
         s => v.includes(s.getType().toLocaleLowerCase()) && !s.getFile(),
       )
       if (find) {
-        find.readFile(path.resolve(v), v)
+        find.readFile(resolve(v), v)
       }
     })
 
@@ -39,7 +39,7 @@ export default class ConfigParseService extends AbstractDeployComponentService {
     }
 
     this.packages = this.configurationParseServiceList.flatMap(v => v.packagesParseHandle())
-    this.packages.unshift({ path: process.cwd(), name: 'root' })
+    this.packages.unshift({ path: join(process.cwd()), name: 'root' })
 
     logger.info(`packages: ${JSON.stringify(this.packages)}`)
 

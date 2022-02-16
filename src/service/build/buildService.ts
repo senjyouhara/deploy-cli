@@ -68,7 +68,7 @@ export default class BuildService extends AbstractDeployComponentService {
       if (item.path) {
         if (item.path == '*') {
           waitPushData = packages.map(v => ({
-            path: v.path,
+            path: join(v.path),
             command: item.command,
             fileName: item.fileName || defaultFileName,
             postScript,
@@ -78,7 +78,7 @@ export default class BuildService extends AbstractDeployComponentService {
           if (filter.length) {
             waitPushData.push(
               ...filter.map(v => ({
-                path: v.path,
+                path: join(v.path),
                 command: item.command,
                 fileName: item.fileName || defaultFileName,
                 postScript,
@@ -91,7 +91,7 @@ export default class BuildService extends AbstractDeployComponentService {
         if (filter.length) {
           waitPushData.push(
             ...filter.map(v => ({
-              path: v.path,
+              path: join(v.path),
               command: item.command,
               fileName: item.fileName || defaultFileName,
               postScript,
@@ -103,7 +103,7 @@ export default class BuildService extends AbstractDeployComponentService {
         const otherFilter = packages.filter(v => !tempList.find(s => s.path == v.path))
         waitPushData.push(
           ...otherFilter.map(v => ({
-            path: v.path,
+            path: join(v.path),
             command: item.command,
             fileName: item.fileName || defaultFileName,
             postScript,
@@ -165,7 +165,7 @@ export default class BuildService extends AbstractDeployComponentService {
 
         logger.print('info', `runScript: ${JSON.stringify(data)}`)
 
-        const fileName = v.fileName(v.path.slice(v.path.lastIndexOf(path.sep) + 1), v.command)
+        const fileName = v.fileName(v.path.slice(v.path.lastIndexOf('/') + 1), v.command)
 
         if (fs.existsSync(`${v.path}/${fileName}.zip`)) {
           info(`该文件已存在 ${v.path}/${fileName}.zip，将进行删除操作`)

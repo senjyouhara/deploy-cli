@@ -36,9 +36,9 @@ export const scanPathList = (basePath: string) => {
       })
     } else {
       list.push({
-        pathName: fullPath.replace(basePath + path.sep, '').replace(/\\+/g, '/'),
+        pathName: fullPath.replace(basePath + '/', '').replace(/\\+/g, '/'),
         path: fullPath.replace(/\\+/g, '/'),
-        fileName: fullPath.slice(fullPath.lastIndexOf(path.sep) + 1).replace(/\\+/g, '/'),
+        fileName: fullPath.slice(fullPath.lastIndexOf('/') + 1).replace(/\\+/g, '/'),
       })
     }
 

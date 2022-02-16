@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { join } from '@kamisiro/deploy-cli/es/util'
 
 export default abstract class AbstractConfigurationParseService {
   constructor() {}
@@ -7,7 +8,7 @@ export default abstract class AbstractConfigurationParseService {
   protected file: any = null
   abstract readFile(filePath: string, fileName: string): void
 
-  currentPath = process.cwd() + path.sep
+  currentPath = join(process.cwd())
 
   packagesParseHandle() {
     const packageFiles: { name: string; path: string }[] = []
@@ -15,11 +16,9 @@ export default abstract class AbstractConfigurationParseService {
       if (packagename.includes('*')) {
         const dir = packagename.replace(/\/\*+/, '')
         const dirList = fs.readdirSync(this.currentPath + packagename.replace(/\/\*+/, ''))
-        packageFiles.push(
-          ...dirList.map(s => ({ name: dir + path.sep + s, path: this.currentPath + dir + path.sep + s })),
-        )
+        packageFiles.push(...dirList.map(s => ({ name: join(dir, s), path: join(this.currentPath, dir, s) })))
       } else {
-        packageFiles.push({ name: packagename, path: this.currentPath + packagename })
+        packageFiles.push({ name: packagename, path: join(this.currentPath, packagename) })
       }
     }
     return packageFiles

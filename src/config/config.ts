@@ -102,7 +102,7 @@ export const platformConfig = [
     type: 'input',
     name: 'privateKey',
     message: '本地私钥路径(和密码二选一)',
-    default: `${os.homedir() + path.sep}.ssh${path.sep}id_rsa`,
+    default: `${join(os.homedir(), '.ssh', 'id_rsa')}`,
   },
   {
     type: 'password',
