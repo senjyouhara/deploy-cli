@@ -8,7 +8,6 @@ import { logger } from '../../logger'
 import ora from 'ora'
 import path from 'path'
 import { notAllowedShellScript } from '../../util'
-import { fail } from 'assert'
 import { deployHooks, deployHooksUtils } from '../../config/config'
 import dayjs from 'dayjs'
 
@@ -171,7 +170,7 @@ export default class SshService extends AbstractDeployComponentService {
       succeed(`开始执行脚本 ${i}`)
       const find = notAllowedShellScript.find(v => v.test(i))
       if (find) {
-        fail(`因安全策略限制，无法执行该命令 ${i} , 请修改`)
+        error(`因安全策略限制，无法执行该命令 ${i} , 请修改`)
         continue
       }
       await this.ssh.execCommand(`${i}`).then(({ stdout }) => {

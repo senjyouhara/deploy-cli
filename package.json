@@ -27,9 +27,9 @@
   "scripts": {
     "dev": "rimraf lib && webpack -w",
     "dev:rollup": "rimraf lib && rollup -c rollup.config.js",
-    "dist": "rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=utils babel src --out-dir es --extensions \".js,.ts\" && babel src --out-file lib/index.js --extensions \".js,.ts\"",
+    "dist": "rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && npm run build:rollup",
     "build": "rimraf lib && cross-env NODE_ENV=development webpack",
-    "build:rollup": "rimraf es && rollup -c rollup.config.js",
+    "build:rollup": "rimraf lib && rollup -c rollup.config.js",
     "init": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\" ",
     "lint": "prettier --parser=typescript --write src",
     "lint-staged": "lint-staged"

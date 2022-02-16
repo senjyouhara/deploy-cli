@@ -32,7 +32,7 @@ module.exports = {
     }]
   ],
   "env": {
-    "utils": {
+    "component": {
       "presets": [
         [
           '@babel/preset-env',

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { join } from '@kamisiro/deploy-cli/es/util'
+import { join } from '../../util'
 
 export default abstract class AbstractConfigurationParseService {
   constructor() {}

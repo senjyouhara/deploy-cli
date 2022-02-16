@@ -45,19 +45,20 @@ const scanPathList = getScanPath(path.resolve(__dirname, 'src'))
  */
 export default {
   // 入口文件
-  input: scanPathList.reduce((t, c) => {
-    if (!t[c.pathName]) {
-      t[c.pathName] = c.path
-    }
-    return t
-  }, {}),
+  // input: scanPathList.reduce((t, c) => {
+  //   if (!t[c.pathName]) {
+  //     t[c.pathName] = c.path
+  //   }
+  //   return t
+  // }, {}),
+  input: './src/index.ts',
   output: [
     {
       // 打包名称
       name,
       // 文件顶部信息
       // banner: '#!/usr/bin/env node',
-      dir: 'es',
+      file: 'lib/index.js',
       format: 'cjs',
       sourcemap: false,
     },

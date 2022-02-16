@@ -10,8 +10,6 @@ import AbstractDeployComponentService from './abstractDeployComponentService'
 import ConfigParseService from './configParse/configParseService'
 import CosServiceImpl from './cos/cosServiceImpl'
 import SshService from './server/sshService'
-import { GitInit } from './git'
-import { SimpleGit } from 'simple-git'
 import { onProcessEvent } from '../process'
 import { logger } from '../logger'
 
@@ -22,8 +20,6 @@ export default class DeployService {
   configFile: ConfigOptions | null = null
   configBranch: string[] = []
   service: AbstractDeployComponentService
-  git: SimpleGit
-  currentBranch: string = ''
 
   constructor() {
     let configParseService = new ConfigParseService()
@@ -31,14 +27,12 @@ export default class DeployService {
     let buildService = new BuildService()
     let cosService = new CosServiceImpl()
     let sshService = new SshService()
-    const { git } = new GitInit()
 
     configParseService.setChildren(installServiceImpl)
     configParseService.setNextService(buildService)
     buildService.setChildren(cosService)
     buildService.setNextService(sshService)
     this.service = configParseService
-    this.git = git
   }
 
   init(obj: DeployCommandType) {
@@ -79,55 +73,10 @@ export default class DeployService {
     }
   }
 
-  /**获取当前分支 */
-  async getCurrentBranch() {
-    const { current } = await this.git.branch()
-    this.currentBranch = current
-  }
-
-  /**分支发布 */
-  async branchPublish(configranch: string) {
-    try {
-      const { modified, files, staged } = await this.git.status()
-      if (modified.length || files.length || staged.length) {
-        await this.git.add('.')
-        await this.git.commit(`${this.configFile?.projectName}项目打包完成！`)
-      }
-      await this.git.checkout(configranch)
-      await this.git.pull('origin', configranch)
-      await this.git.mergeFromTo(this.currentBranch, configranch)
-      await this.git.push('origin', configranch)
-      const publishTips = `${configranch}分支发布完成！`
-      info(publishTips)
-      logger.info(publishTips)
-    } catch (err) {
-      const errorTips = `${configranch}分支发布出错了`
-      error(errorTips)
-      logger.error(`${errorTips} branchPublishError: ${JSON.stringify(err)}`)
-    } finally {
-      await this.git.checkout(this.currentBranch)
-    }
-  }
-
-  /**执行切换发布分支任务 */
-  async taskCheckoutBranchPublish(obj: DeployCommandType) {
-    if (!obj.branch) return
-    await this.getCurrentBranch()
-
-    const branchTips: string[] = [`当前分支为：${this.currentBranch}`, `发布分支为：${obj.branch}`]
-    branchTips.forEach(item => logger.print('info', item))
-
-    this.configBranch = obj.branch.split(',')
-    for (let i = 0; i < this.configBranch.length; i++) {
-      await this.branchPublish(this.configBranch[i])
-    }
-  }
-
   async run(obj: DeployCommandType) {
     onProcessEvent.onProcess()
     this.init(obj)
     this.readConfigFile()
-    this.taskCheckoutBranchPublish(obj)
 
     deployHooksUtils.run('start', this.configFile!)
 
