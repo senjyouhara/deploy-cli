@@ -16,7 +16,7 @@ module.exports = {
   ],
   plugins: [
     '@babel/plugin-external-helpers',
-    // '@babel/plugin-transform-runtime',
+    '@babel/plugin-transform-runtime',
     // ["module-resolver", {
     //   "root": ["./"],
     //   "alias": {
