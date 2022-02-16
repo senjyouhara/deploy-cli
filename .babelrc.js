@@ -16,13 +16,13 @@ module.exports = {
   ],
   plugins: [
     '@babel/plugin-external-helpers',
-    '@babel/plugin-transform-runtime',
-    ["module-resolver", {
-      "root": ["./"],
-      "alias": {
-        "@": "@kamisiro/deploy-cli/lib",
-      }
-    }],
+    // '@babel/plugin-transform-runtime',
+    // ["module-resolver", {
+    //   "root": ["./"],
+    //   "alias": {
+    //     "@": "@kamisiro/deploy-cli/lib",
+    //   }
+    // }],
     ["define-patterns", {
       "replacements": {
         "process.env.NODE_ENV": process.env.NODE_ENV,
@@ -31,4 +31,21 @@ module.exports = {
       }
     }]
   ],
+  "env": {
+    "utils": {
+      "presets": [
+        [
+          '@babel/preset-env',
+          {
+            modules: false,
+            targets: {
+              esmodules: true,
+            },
+          },
+        ],
+      ],
+      "plugins": [
+      ]
+    },
+  }
 }

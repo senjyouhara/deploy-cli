@@ -4,10 +4,10 @@
     "module": "esnext",
     "target": "es6",
     "lib": ["esnext", "dom"],
-    "sourceMap": true,
+    "sourceMap": false,
     "baseUrl": ".",
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "esModuleInterop": true,
     "importHelpers": true,
     "resolveJsonModule": true,
@@ -24,7 +24,8 @@
     "experimentalDecorators": true,
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@kamisiro/deploy-cli": ["./src/index.ts"],
+      "@kamisiro/deploy-cli/es/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],
