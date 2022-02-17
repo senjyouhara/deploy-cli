@@ -7,7 +7,7 @@ import fs from 'fs'
 import path from 'path'
 import archiver from 'archiver'
 import { deployHooksUtils } from '../../config/config'
-import {join, log, scanPathList} from '../../util'
+import { join, log, scanPathList } from '../../util'
 import { deleteFolder } from '../../util/ioUtil'
 export type runScriptType = {
   path: string
@@ -179,6 +179,8 @@ export default class BuildService extends AbstractDeployComponentService {
 
         succeed('开始进行打包zip操作')
 
+        let isZipSuccess = false
+
         const output = fs
           .createWriteStream(`${v.path}/${fileName}.zip`)
           .on('error', e => {
@@ -187,6 +189,7 @@ export default class BuildService extends AbstractDeployComponentService {
             }
           })
           .on('finish', () => {
+            isZipSuccess = true
             succeed(`${underline(`${fileName}.zip`)} 打包成功`)
           })
         const archive = archiver('zip')
@@ -245,6 +248,15 @@ export default class BuildService extends AbstractDeployComponentService {
         }
 
         deployHooksUtils.run('postBuild', this.config!, v, result)
+
+        await new Promise(res => {
+          let timer = setInterval(() => {
+            if (isZipSuccess) {
+              clearInterval(timer)
+              res(1)
+            }
+          }, 50)
+        })
 
         results.push(result)
       }
