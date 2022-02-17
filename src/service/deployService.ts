@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { ConfigOptions, DeployCommandType, ScriptType, PathInfoType, CosType } from '../types/type'
 import { error, info } from '../util/oraUtil'
-import { DEFAULT_FILE_NAME, resolve } from '../util'
+import {DEFAULT_FILE_NAME, log, resolve} from '../util'
 import { deployHooksUtils } from '../config/config'
 import InstallServiceImpl from './install/installServiceImpl'
 import BuildService from './build/buildService'
@@ -11,7 +11,6 @@ import ConfigParseService from './configParse/configParseService'
 import CosServiceImpl from './cos/cosServiceImpl'
 import SshService from './server/sshService'
 import { onProcessEvent } from '../process'
-import { logger } from '../logger'
 
 export default class DeployService {
   packages: PathInfoType[] = []
@@ -50,7 +49,7 @@ export default class DeployService {
       }
     })
 
-    logger.info(`configPaths: ${JSON.stringify(this.configPaths)}`)
+    log(`configPaths: `, this.configPaths)
   }
 
   readConfigFile() {
@@ -58,15 +57,15 @@ export default class DeployService {
       const fileName = this.configFiles[i]
       const filePath = this.configPaths[i]
       try {
-        logger.info(`filePath: ${filePath}`)
-        logger.info(`fileName: ${fileName}`)
+        log(`filePath: `, filePath)
+        log(`fileName: `, fileName)
         // eslint-disable-next-line no-eval
         const localFile = eval(`require('${filePath}')`)
-        logger.info(`localFile: ${JSON.stringify(localFile)}`)
+        log(`localFile: `,localFile)
         // eslint-disable-next-line no-eval
         this.configFile = Object.assign({}, this.configFile, localFile)
       } catch (e) {
-        logger.print('error', `error: ${e}`)
+        console.log(`error: `, e)
         error(`${fileName}文件读取失败, 请检查！`)
         process.exit(1)
       }

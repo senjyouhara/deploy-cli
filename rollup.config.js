@@ -1,14 +1,14 @@
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
+import typescript from '@rollup/plugin-typescript'
+import json from '@rollup/plugin-json'
 import path from 'path'
 import fs from 'fs'
 import { name } from './package.json'
 import sourcemaps from 'rollup-plugin-sourcemaps'
-import commonjs from 'rollup-plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs'
 import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle'
 import cleanup from 'rollup-plugin-cleanup'
-import resolve from 'rollup-plugin-node-resolve'
-import babel from 'rollup-plugin-babel'
+import resolve from '@rollup/plugin-node-resolve'
+import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 
 const _getScanPath = (basePath, fullPath) => {
@@ -74,6 +74,8 @@ export default {
     // commonjs(),
     babel({
       exclude: 'node_modules/**', // 仅仅转译我们的源码
+      babelHelpers: 'runtime',
+      extensions: ['.js', '.ts'],
     }),
     json({
       include: ['src/**', 'package.json'],

@@ -3,7 +3,7 @@ import InstallService from './installService'
 import CMD from 'node-cmd'
 import * as fs from 'fs'
 import { succeed } from '../../util/oraUtil'
-import { logger } from '../../logger'
+import {log} from "../../util";
 export default abstract class AbstractInstallServiceImpl implements InstallService {
   protected type = ''
   protected command = ''
@@ -32,7 +32,7 @@ export default abstract class AbstractInstallServiceImpl implements InstallServi
 
   isSupport(): boolean {
     const { err, data, stderr } = CMD.runSync(this.command + ' -v')
-    err && logger.print('error', `isSupportError: ${JSON.stringify(err)}`)
+    err && log(`isSupportError: `, err)
     return !err
   }
 

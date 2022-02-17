@@ -1,15 +1,13 @@
 import { saveFile } from '../util/ioUtil'
 import { ConfigOptions } from '../types/type'
-import {getFileName, join} from '../util'
-import path from 'path'
+import { getFileName, join, log } from '../util'
 import { loading } from '../util/oraUtil'
 import chalk from 'chalk'
 import { defineConfig, platformConfig } from '../config/config'
-import { logger } from '../logger'
 
 export default class ConfigProcessService {
   checkConfig(answer: ConfigOptions) {
-    logger.info(`answer: ${JSON.stringify(answer)}`)
+    log(`answer: `, answer)
 
     platformConfig
       .filter(v => v.default instanceof Boolean)

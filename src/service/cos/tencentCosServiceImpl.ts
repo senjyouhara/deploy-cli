@@ -3,8 +3,8 @@ import { CosTempAuthType, CosType } from '../../types/type'
 import Cos from 'cos-nodejs-sdk-v5'
 import { error } from '../../util/oraUtil'
 import fs from 'fs'
-import { logger } from '../../logger'
 import { getCosInfo } from '../../api/authApi'
+import {log} from "../../util";
 
 export default class TencentCosServiceImpl extends AbstractCosServiceImpl {
   COS_UPLOAD_PATH = '/web/temp/'
@@ -55,7 +55,7 @@ export default class TencentCosServiceImpl extends AbstractCosServiceImpl {
         Key: this.COS_UPLOAD_PATH + fileKey,
       })
       .then(function (data: any) {
-        logger.print('info', `data: ${JSON.stringify(data)}`)
+        log(`data: `, data)
       })
   }
 
@@ -68,11 +68,11 @@ export default class TencentCosServiceImpl extends AbstractCosServiceImpl {
         StorageClass: 'STANDARD',
         Body: fs.createReadStream(path), // 上传文件对象
         onProgress: function (progressData: any) {
-          logger.log(`progressData: ${JSON.stringify(progressData)}`)
+          log(`progressData: ${progressData}`)
         },
       })
       .then(function (data: any) {
-        logger.print('info', `data: ${JSON.stringify(data)}`)
+        log(`data: `, data)
       })
   }
 }

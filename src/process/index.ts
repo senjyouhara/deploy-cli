@@ -1,4 +1,3 @@
-import { logger } from '../logger'
 
 export class ProcessEvent {
   processEventList: string[] = ['exit', 'message', 'uncaughtException']
@@ -10,7 +9,7 @@ export class ProcessEvent {
     }
     this.processEventList.forEach(item => {
       process.on(item, err => {
-        logger.warn(`process_${item}: ${JSON.stringify(err)}`)
+        err && console.log(`process_${item}: ${err}`)
       })
     })
   }

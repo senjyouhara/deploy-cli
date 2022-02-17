@@ -3,12 +3,11 @@ import { ConfigOptions, PathInfoType, ScriptType } from '../../types/type'
 import CMD from 'node-cmd'
 import AbstractDeployComponentService from '../abstractDeployComponentService'
 import { error, info, loading, succeed, underline } from '../../util/oraUtil'
-import { logger } from '../../logger'
 import fs from 'fs'
 import path from 'path'
 import archiver from 'archiver'
 import { deployHooksUtils } from '../../config/config'
-import { join, scanPathList } from '../../util'
+import {join, log, scanPathList} from '../../util'
 import { deleteFolder } from '../../util/ioUtil'
 export type runScriptType = {
   path: string
@@ -45,6 +44,8 @@ export default class BuildService extends AbstractDeployComponentService {
       packages = packages.filter(v => v.name != 'root')
     }
 
+    log(`packages: `, packages)
+
     for (let i in waitBuildScripts) {
       const item = waitBuildScripts[i]
       const postScript = item.postScript ? (Array.isArray(item.postScript) ? item.postScript : [item.postScript]) : []
@@ -59,7 +60,6 @@ export default class BuildService extends AbstractDeployComponentService {
       if (!item.command) {
         continue
       }
-      logger.print('info', `packages: ${JSON.stringify(packages)}`)
 
       const filter = packages.filter(v => {
         return (item.path && v.path.endsWith(item.path!)) || (item.pattern && item.pattern.test(v.path))
@@ -124,7 +124,7 @@ export default class BuildService extends AbstractDeployComponentService {
         const excludeFilter = waitPushData.filter(
           v => !exclude.find(s => (v.path && v.path.endsWith(s.path!)) || (v.path && s.pattern?.test(v.path))),
         )
-        console.log(excludeFilter, 'excludeFilter')
+        log(excludeFilter, 'excludeFilter')
         if (excludeFilter.length) {
           waitPushData = excludeFilter
         }
@@ -142,7 +142,7 @@ export default class BuildService extends AbstractDeployComponentService {
 
     this.runScripts = list
 
-    logger.print('info', `checkScriptList: ${JSON.stringify(list)}`)
+    log(`checkScriptList: `, list)
   }
 
   async runScript(): Promise<any> {
@@ -159,11 +159,11 @@ export default class BuildService extends AbstractDeployComponentService {
 
         if (err) {
           error('打包命令执行失败')
-          logger.print('error', `err:${JSON.stringify(err)}`)
+          console.log(`err:`, err)
           process.exit(-1)
         }
 
-        logger.print('info', `runScript: ${JSON.stringify(data)}`)
+        console.log(data)
 
         const fileName = v.fileName(v.path.slice(v.path.lastIndexOf('/') + 1), v.command)
 

@@ -47,3 +47,7 @@ export const scanPathList = (basePath: string) => {
 
   return _getScanPath(basePath, basePath)
 }
+
+export function log(...args: any) {
+  process.env.isDev && console.log(...args)
+}

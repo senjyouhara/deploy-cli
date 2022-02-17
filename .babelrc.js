@@ -1,9 +1,16 @@
 const packageJson = require('./package.json')
 
+const replaceObj = {
+  "process.env.isDev": process.env.isDev,
+  "process.env.NODE_ENV": process.env.NODE_ENV,
+  "process.env.PKG_VERSION": packageJson.version,
+  "process.env.NAME": packageJson.name,
+}
+
 module.exports = {
   comments: false,
   presets: [
-    [
+    !process.env.isRollup && [
       '@babel/preset-env',
       {
         modules: 'cjs',
@@ -13,7 +20,7 @@ module.exports = {
       },
     ],
     "@babel/preset-typescript"
-  ],
+  ].filter(Boolean),
   plugins: [
     '@babel/plugin-external-helpers',
     '@babel/plugin-transform-runtime',
@@ -24,12 +31,8 @@ module.exports = {
     //   }
     // }],
     ["define-patterns", {
-      "replacements": {
-        "process.env.NODE_ENV": process.env.NODE_ENV,
-        "process.env.PKG_VERSION": packageJson.version,
-        "process.env.NAME": packageJson.name,
-      }
-    }]
+      "replacements": replaceObj
+    }],
   ],
   "env": {
     "component": {
@@ -37,7 +40,7 @@ module.exports = {
         [
           '@babel/preset-env',
           {
-            modules: false,
+            modules: 'auto',
             targets: {
               esmodules: true,
             },

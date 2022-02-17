@@ -1,8 +1,7 @@
 import Command from './command'
 import minimist from 'minimist'
-import { getVersion } from './util'
+import { getVersion, log } from './util'
 import { onProcessEvent } from './process'
-import { logger } from './logger'
 
 export default class EntryService {
   command: Command = new Command()
@@ -26,14 +25,13 @@ export default class EntryService {
       boolean: ['version', 'help'],
     })
     const command: string = args._[0]
-    logger.info(`command: ${command}`)
-    logger.info(`args: ${JSON.stringify(args)}`)
+    log(`command: ${command}`)
+    log(`args: ${JSON.stringify(args)}`)
     if (command) {
       this.command.execCommand(command, args)
     } else {
       if (args.v) {
-        // @ts-ignore
-        logger.print('info', `Version: ${getVersion()}`)
+        console.log(`Version: ${getVersion()}`)
       } else {
         const loggerTips = [
           'Usage: senjyouhara-deploy-cli [Options] Or senjyouhara-deploy-cli <command> [options]',
@@ -43,13 +41,11 @@ export default class EntryService {
           'Commands:',
         ]
         loggerTips.forEach(item => {
-          // @ts-ignore
-          logger.print('info', item)
+          console.log('info', item)
         })
         const commandDesc = this.command.getCommandDesc()
         commandDesc.forEach(v => {
-          // @ts-ignore
-          logger.print('info', `  ${v.command}      ${v.desc}`)
+          console.log('info', `  ${v.command}      ${v.desc}`)
         })
       }
     }

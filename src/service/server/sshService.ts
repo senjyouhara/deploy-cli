@@ -4,10 +4,9 @@ import { NodeSSH } from 'node-ssh'
 import { error, info, loading, succeed, underline } from '../../util/oraUtil'
 import * as fs from 'fs'
 import { buildType } from '../build/buildService'
-import { logger } from '../../logger'
 import ora from 'ora'
 import path from 'path'
-import { notAllowedShellScript } from '../../util'
+import { log, notAllowedShellScript } from '../../util'
 import { deployHooks, deployHooksUtils } from '../../config/config'
 import dayjs from 'dayjs'
 
@@ -97,7 +96,7 @@ export default class SshService extends AbstractDeployComponentService {
           concurrency: 1,
         })
         .then(null, err => {
-          logger.print('error', `error: ${JSON.stringify(err)}`)
+          err && console.log(`error: `, err)
         })
 
       spinner.stop()

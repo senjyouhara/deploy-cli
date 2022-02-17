@@ -5,10 +5,10 @@ import InstallService from './installService'
 import { error, info, loading, succeed } from '../../util/oraUtil'
 import AbstractDeployComponentService from '../abstractDeployComponentService'
 import { ConfigOptions, PathInfoType } from '../../types/type'
-import { logger } from '../../logger'
 // @ts-ignore
 import CMD from 'node-cmd'
 import { deployHooks, deployHooksUtils } from '../../config/config'
+import { log } from '../../util'
 
 export default class InstallServiceImpl extends AbstractDeployComponentService implements InstallService {
   service: InstallService
@@ -38,7 +38,6 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
 
   // @ts-ignore
   async exec(packages: PathInfoType[]): Promise<any> {
-    logger.info(`packages: ${JSON.stringify(packages)}`)
     for (const v of packages) {
       deployHooksUtils.run('preInstall', this.config!, v)
 
@@ -46,7 +45,7 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
       CMD.runSync('cd ' + v.path)
       const err = await service.exec()
       if (err) {
-        logger.print('error', `err:${JSON.stringify(err)}`)
+        console.log(`err:`, err)
         process.exit(1)
       }
 
