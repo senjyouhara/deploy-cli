@@ -1,6 +1,6 @@
 {
   "name": "@kamisiro/deploy-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "前端自动化部署脚手架",
   "author": {
     "name": "senjyouhara"

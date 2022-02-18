@@ -15,7 +15,7 @@ export default abstract class AbstractConfigurationParseService {
     for (let packagename of this.packages) {
       if (packagename.includes('*')) {
         const dir = packagename.replace(/\/\*+/, '')
-        const dirList = fs.readdirSync(this.currentPath + packagename.replace(/\/\*+/, ''))
+        const dirList = fs.readdirSync(join(this.currentPath, packagename.replace(/\/\*+/, '')))
         packageFiles.push(...dirList.map(s => ({ name: join(dir, s), path: join(this.currentPath, dir, s) })))
       } else {
         packageFiles.push({ name: packagename, path: join(this.currentPath, packagename) })
