@@ -126,6 +126,35 @@ export const platformConfig = [
     message: 'cosSecretKey(如果填写该项目则为cdn项目)',
   },
   {
+    type: 'input',
+    name: 'cosType',
+    message: 'cos类型',
+    default: 'tencent',
+    when: () => false,
+  },
+  {
+    type: 'input',
+    name: 'bucket',
+    message: 'cos桶名称',
+  },
+  {
+    type: 'input',
+    name: 'region',
+    message: 'cos地域',
+  },
+  {
+    type: 'input',
+    name: 'cosUploadPath',
+    message: 'cos上传目录',
+  },
+  {
+    type: 'input',
+    name: 'getTempAuthInfo',
+    message: '获取临时密钥函数',
+    default: 'function(){ return {} }',
+    when: () => false,
+  },
+  {
     type: 'confirm',
     name: 'isRemoveCosFile',
     message: '是否上传到cos之前先清除原本目录',

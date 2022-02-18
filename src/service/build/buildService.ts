@@ -197,7 +197,7 @@ export default class BuildService extends AbstractDeployComponentService {
 
         let waitUploadStaticFileList: waitUploadStaticFileType[] = []
         // 如果为cos项目 则不对内部静态资源打包 只打包index.html和图标
-        if (this.config?.secretId || this.config?.isUseTempCosAuth) {
+        if (this.config?.secretId || this.config?.getTempAuthInfo) {
           if (fs.existsSync(join(v.path, fileName, 'index.html'))) {
             archive.file(join(v.path, fileName, 'index.html'), { name: 'index.html' })
           } else {
@@ -213,7 +213,7 @@ export default class BuildService extends AbstractDeployComponentService {
         }
         await archive.finalize()
 
-        if (this.config?.secretId || this.config?.isUseTempCosAuth) {
+        if (this.config?.secretId || this.config?.getTempAuthInfo) {
           waitUploadStaticFileList = waitUploadStaticFileList.filter(v => {
             return !['index.html', 'favicon.ico'].includes(v.pathName)
           })

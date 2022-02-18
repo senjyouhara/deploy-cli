@@ -28,7 +28,7 @@ export default class ConfigProcessService {
   saveFile(json: ConfigOptions) {
     const spinner = loading('正在生成配置文件...')
     // const requireStr = `const { ${defineConfig.name} } = require('${process.env.NAME}')`
-    const exportStr = `module.exports = ${defineConfig.name}(${JSON.stringify(json, null, 2)})`
+    const exportStr = `const { defineConfig } = require('@kamisiro/deploy-cli');\nmodule.exports = defineConfig(${JSON.stringify(json, null, 2)})`
 
     const filePath = join(process.cwd(), getFileName(json.platformName))
     const fileData = `${exportStr}`

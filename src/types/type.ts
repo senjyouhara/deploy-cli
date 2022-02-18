@@ -14,14 +14,21 @@ export interface SshType {
 }
 
 export interface CosType {
+  cosType: 'tencent' | 'aliyun'
   // cosSecretId(如果填写该项目则为cdn项目)
-  secretId: string
+  secretId?: string
   // cosSecretKey(如果填写该项目则为cdn项目)
-  secretKey: string
-  // 是否使用临时cos秘钥进行cos上传(如果为true则不需要填写secretId和secretKey)
-  isUseTempCosAuth: boolean
+  secretKey?: string
+  // cos桶名称
+  bucket: string
+  // cos地域
+  region: string
+  // cos上传目录
+  cosUploadPath: string
   // 是否上传到cos之前先清除原本目录
   isRemoveCosFile: boolean
+  // 获取临时密钥函数
+  getTempAuthInfo?: () => CosTempAuthType
 }
 
 export interface ServerOptionsType {
@@ -136,7 +143,6 @@ export interface ConfigOptions extends SshType, CosType, ServerOptionsType {
 
 export interface DeployCommandType {
   mode: string
-  branch: string
 }
 
 export interface InitCommandType {

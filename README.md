@@ -6,10 +6,10 @@
 
 ## 脚手架运行命令行
 
-在命令行通过 ibingli-deploy-cli -h 可以获取相关帮助信息
+在命令行通过 @kamisiro/deploy-cli -h 可以获取相关帮助信息
 
 ```
-Usage: ibingli-deploy-cli [Options] Or ibingli-deploy-cli <command> [options]
+Usage: @kamisiro/deploy-cli [Options] Or ibingli-deploy-cli <command> [options]
 Options:
   -v, --version  查询版本号
   -h, --help     显示帮助
@@ -21,18 +21,18 @@ Commands:
 
 ```
 
-`ibingli-deploy-cli -v` 获取版本信息
+`@kamisiro/deploy-cli -v` 获取版本信息
 
 ### 调用命令
 
 - init 生成部署配置文件
 
-  - `ibingli-deploy-cli init` 通过控制台进行交互方式生成配置文件
-  - `ibingli-deploy-cli init -d` 通过默认参数生成配置文件
+  - `@kamisiro/deploy-cli init` 通过控制台进行交互方式生成配置文件
+  - `@kamisiro/deploy-cli init -d` 通过默认参数生成配置文件
 
 - deploy 执行部署命令
-  - `ibingli-deploy-cli deploy` 通过加载 deploy.config.js 文件当做配置文件执行部署命令
-  - `ibingli-deploy-cli deploy --mode=prod` 通过加载 prod.deploy.config.js 文件与 deploy.config.js 文件进行合并处理后当
+  - `@kamisiro/deploy-cli deploy` 通过加载 deploy.config.js 文件当做配置文件执行部署命令
+  - `@kamisiro/deploy-cli deploy --mode=prod` 通过加载 prod.deploy.config.js 文件与 deploy.config.js 文件进行合并处理后当
     做配置文件执行部署命令
 
 ## 配置文件
@@ -111,13 +111,19 @@ interface ConfigOptions {
   // 是否删除本地打包文件
   isRemoveLocalFile: boolean
   // cosSecretId(如果填写该项目则为cdn项目)
-  secretId: string
+  secretId?: string
   // cosSecretKey(如果填写该项目则为cdn项目)
-  secretKey: string
-  // 是否使用临时cos秘钥进行cos上传(如果为true则不需要填写secretId和secretKey)
-  isUseTempCosAuth: boolean
+  secretKey?: string
+  // cos桶名称
+  bucket: string
+  // cos地域
+  region: string
+  // cos上传目录
+  cosUploadPath: string
   // 是否上传到cos之前先清除原本目录
   isRemoveCosFile: boolean
+  // 获取临时密钥函数
+  getTempAuthInfo?: () => CosTempAuthType
   // 服务器地址
   host: string
   // 服务器端口号
