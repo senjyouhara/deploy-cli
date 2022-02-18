@@ -110,6 +110,7 @@ interface ConfigOptions {
   outputPath: string
   // 是否删除本地打包文件
   isRemoveLocalFile: boolean
+  cosType: 'tencent' | 'aliyun'
   // cosSecretId(如果填写该项目则为cdn项目)
   secretId?: string
   // cosSecretKey(如果填写该项目则为cdn项目)
@@ -146,5 +147,38 @@ interface ConfigOptions {
   isRemoveServerFile: boolean
   // 在文件部署完成后执行一些服务器脚本
   serverScript: string | string[]
+}
+```
+
+example
+```
+
+更多配置信息请到@kamisiro/deploy-cli/lib/types/type.d.ts里查看
+
+module.exports = {
+  "projectName": "ant-design-pro",
+  "platformName": "",
+  "script": "npm run build",
+  "isInstall": false,
+  "scriptPost": "echo 1234",
+  "host": "你的服务器ip",
+  "port": 22,
+  "username": "你的服务器用户名",
+  "password": "你的服务器密码",
+  "privateKey": "你的私钥路径",
+  "passphrase": "",
+  "isRemoveCosFile": false,
+  "secretId": "你的cosId",
+  "secretKey": "你的cosKey",
+  cosUploadPath: '/temp/',
+  bucket: '你的cos桶名称',
+  region: '你的地域',
+  "outputPath": "dist",
+  "serverPath": "/test",
+  "isBakFile": true,
+  "bakFileName": "",
+  "isRemoveServerFile": true,
+  "isRemoveLocalFile": true,
+  "serverScript": "echo success"
 }
 ```

@@ -148,13 +148,6 @@ export const platformConfig = [
     message: 'cos上传目录',
   },
   {
-    type: 'input',
-    name: 'getTempAuthInfo',
-    message: '获取临时密钥函数',
-    default: 'function(){ return {} }',
-    when: () => false,
-  },
-  {
     type: 'confirm',
     name: 'isRemoveCosFile',
     message: '是否上传到cos之前先清除原本目录',
