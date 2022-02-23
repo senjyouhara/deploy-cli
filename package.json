@@ -32,7 +32,7 @@
     "build": "rimraf lib && cross-env NODE_ENV=development webpack",
     "build:rollup": "cross-env isRollup=true NODE_ENV=development rollup -c rollup.config.js",
     "prepare": "husky install",
-    "test": "npx husky add .husky/pre-commit \"npx lint-staged --allow-empty\"",
+    "init": "npx husky add .husky/pre-commit \"npx lint-staged --allow-empty\"",
     "lint": "prettier --parser=typescript --write src",
     "lint-staged": "lint-staged"
   },
