@@ -31,7 +31,8 @@
     "dist:build": "cross-env rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && npm run build:rollup",
     "build": "rimraf lib && cross-env NODE_ENV=development webpack",
     "build:rollup": "cross-env isRollup=true NODE_ENV=development rollup -c rollup.config.js",
-    "init": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\" ",
+    "prepare": "husky install",
+    "test": "npx husky add .husky/pre-commit \"npx lint-staged\"",
     "lint": "prettier --parser=typescript --write src",
     "lint-staged": "lint-staged"
   },
@@ -41,11 +42,15 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,md,json}": [
-      "prettier --write"
+    "src/**/*.{js,jsx,md,json}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
     ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
+    "src/**/*.ts(x)?": [
+      "eslint --fix",
+      "prettier --parser=typescript --write",
+      "git add"
     ]
   },
   "devDependencies": {
@@ -106,7 +111,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.10.7",
     "fs": "0.0.1-security",
-    "husky": "4.3.8",
+    "husky": "7.0.4",
     "inquirer": "^7.3.3",
     "js-yaml": "^4.1.0",
     "lint-staged": "11.0.0",
