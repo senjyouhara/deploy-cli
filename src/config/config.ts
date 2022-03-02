@@ -38,8 +38,7 @@ export const platformConfig = [
   {
     type: 'input',
     name: 'script',
-    message: '打包命令(更具体的使用请在生成后的文件里查看)',
-    when: () => false,
+    message: '打包命令',
     default: 'npm run build',
   },
   {
@@ -102,7 +101,7 @@ export const platformConfig = [
     type: 'input',
     name: 'privateKey',
     message: '本地私钥路径(和密码二选一)',
-    default: `${join(os.homedir(), '.ssh', 'id_rsa')}`,
+    default: join(os.homedir(), '.ssh', 'id_rsa'),
   },
   {
     type: 'password',
@@ -173,18 +172,12 @@ export const platformConfig = [
   {
     type: 'input',
     name: 'bakFileName',
-    message: '备份的文件名',
+    message: '备份的文件名(如为空则默认生成)',
   },
   {
     type: 'confirm',
     name: 'isRemoveServerFile',
-    message: '是否删除服务器文件',
-    default: true,
-  },
-  {
-    type: 'confirm',
-    name: 'isRemoveLocalFile',
-    message: '是否删除本地打包文件',
+    message: '是否部署前先删除服务器原文件',
     default: true,
   },
   {

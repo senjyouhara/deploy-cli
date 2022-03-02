@@ -108,8 +108,6 @@ interface ConfigOptions {
   postScript: string | string[]
   // 本地打包生成目录
   outputPath: string
-  // 是否删除本地打包文件
-  isRemoveLocalFile: boolean
   cosType: 'tencent' | 'aliyun'
   // cosSecretId(如果填写该项目则为cdn项目)
   secretId?: string
@@ -143,7 +141,7 @@ interface ConfigOptions {
   isBakFile: boolean
   // 备份的文件名
   bakFileName: string | ((name: string) => string)
-  // 是否删除服务器文件
+  // 是否部署前先删除服务器原文件
   isRemoveServerFile: boolean
   // 在文件部署完成后执行一些服务器脚本
   serverScript: string | string[]
@@ -178,7 +176,6 @@ module.exports = {
   "isBakFile": true,
   "bakFileName": "",
   "isRemoveServerFile": true,
-  "isRemoveLocalFile": true,
   "serverScript": "echo success"
 }
 ```

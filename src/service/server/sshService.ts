@@ -63,8 +63,10 @@ export default class SshService extends AbstractDeployComponentService {
   // 删除远程文件
   async removeRemoteFile(path: string) {
     try {
-      // info(`删除远程文件 ${underline(path)}`)
-      await this.ssh.execCommand(`rm -rf ${path}`)
+      if (this.config!.isRemoveServerFile) {
+        info(`删除远程文件 ${underline(path)}`)
+        await this.ssh.execCommand(`rm -rf ${path}`)
+      }
     } catch (e) {
       error(e as string)
       process.exit(1)
@@ -73,12 +75,10 @@ export default class SshService extends AbstractDeployComponentService {
 
   // 删除本地打包文件
   async removeZipFile(path: string) {
-    if (this.config!.isRemoveLocalFile) {
-      const localPath = path
-      info(`删除本地打包文件 ${underline(localPath)}`)
-      fs.unlinkSync(localPath)
-      succeed('删除本地打包文件成功')
-    }
+    const localPath = path
+    info(`删除本地打包文件 ${underline(localPath)}`)
+    fs.unlinkSync(localPath)
+    succeed('删除本地打包文件成功')
   }
 
   // 上传本地文件
