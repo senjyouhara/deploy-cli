@@ -246,4 +246,4 @@ export const deployHooksUtils = {
   },
 }
 
-export const defineConfig = (config: ConfigOptions) => config
+export declare function defineConfig(config: ConfigOptions): ConfigOptions
