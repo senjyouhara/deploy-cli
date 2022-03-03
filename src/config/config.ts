@@ -245,5 +245,3 @@ export const deployHooksUtils = {
     preFilter.forEach(v => v[keyName](...args))
   },
 }
-
-export declare function defineConfig(config: ConfigOptions): ConfigOptions

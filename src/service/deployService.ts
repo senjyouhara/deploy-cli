@@ -15,7 +15,7 @@ import { readLocalFile } from '../util/ioUtil'
 
 export default class DeployService {
   configPaths: string[] = []
-  configFiles: string[] = []
+  configFileNames: string[] = []
   configFile: ConfigOptions | null = null
   configBranch: string[] = []
   service: AbstractDeployComponentService
@@ -50,13 +50,15 @@ export default class DeployService {
       error(`找不到${obj.mode ? obj.mode + '.' + DEFAULT_FILE_NAME : DEFAULT_FILE_NAME}文件，请检查！`)
       process.exit(-1)
     }
-
+    this.configPaths = filePaths
+    this.configFileNames = fileNames
     log(`configPaths: `, this.configPaths)
+    log(`configFileNames: `, this.configFileNames)
   }
 
   readConfigFile() {
     for (let i in this.configPaths) {
-      const fileName = this.configFiles[i]
+      const fileName = this.configFileNames[i]
       const filePath = this.configPaths[i]
       try {
         log(`filePath: `, filePath)

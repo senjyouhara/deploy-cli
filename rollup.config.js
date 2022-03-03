@@ -3,13 +3,13 @@ import json from '@rollup/plugin-json'
 import path from 'path'
 import fs from 'fs'
 import { name } from './package.json'
-import sourcemaps from 'rollup-plugin-sourcemaps'
+// import sourcemaps from 'rollup-plugin-sourcemaps'
 import commonjs from '@rollup/plugin-commonjs'
 import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle'
-import cleanup from 'rollup-plugin-cleanup'
+// import cleanup from 'rollup-plugin-cleanup'
 import resolve from '@rollup/plugin-node-resolve'
 import babel from '@rollup/plugin-babel'
-import { terser } from 'rollup-plugin-terser'
+// import { terser } from 'rollup-plugin-terser'
 
 const _getScanPath = (basePath, fullPath) => {
   if (!fullPath || !fs.existsSync(fullPath)) {
@@ -71,7 +71,7 @@ export default {
       // main: true,
       // browser: true,
     }),
-    // commonjs(),
+    commonjs(),
     babel({
       exclude: 'node_modules/**', // 仅仅转译我们的源码
       babelHelpers: 'runtime',

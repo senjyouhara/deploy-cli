@@ -26,10 +26,14 @@ export const readLocalFile = (path: string) => {
   const data = babel.transformFileSync(path, options).code
   const wrapper = ['(function(exports, require, module, __filename,__dirname){', '})']
   let fnStr = wrapper[0] + data + wrapper[1]
-  let wrapperFn = vm.runInThisContext(fnStr)
+  const contextifiedObject = vm.createContext({
+    require,
+  })
+  log(data, 'code')
+  let wrapperFn = vm.runInThisContext(fnStr, contextifiedObject)
   let value = {}
   wrapperFn.call(value, value, require, value, __filename, __dirname)
-  log(value, 'data')
+  log(value, contextifiedObject, 'data')
   return value
 }
 

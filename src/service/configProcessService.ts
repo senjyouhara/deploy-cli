@@ -3,7 +3,7 @@ import { ConfigOptions } from '../types/type'
 import { getFileName, join, log } from '../util'
 import { loading } from '../util/oraUtil'
 import chalk from 'chalk'
-import { defineConfig, platformConfig } from '../config/config'
+import { platformConfig } from '../config/config'
 
 export default class ConfigProcessService {
   checkConfig(answer: ConfigOptions) {
@@ -27,8 +27,8 @@ export default class ConfigProcessService {
 
   saveFile(json: ConfigOptions) {
     const spinner = loading('正在生成配置文件...')
-    const requireStr = `import { ${defineConfig.name} } from '${process.env.NAME}'`
-    const exportStr = `${requireStr}\nexport default ${defineConfig.name}(${JSON.stringify(json, null, 2)})`
+    const requireStr = `import { defineConfig } from '${process.env.NAME}'`
+    const exportStr = `${requireStr}\nexport default defineConfig(${JSON.stringify(json, null, 2)})`
 
     const filePath = join(process.cwd(), getFileName(json.platformName) + '.ts')
     const fileData = `${exportStr}`
