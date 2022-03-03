@@ -2,7 +2,7 @@ import Command from './command'
 import minimist from 'minimist'
 import { getVersion, log } from './util'
 import { onProcessEvent } from './process'
-
+import map from './util/global'
 export default class EntryService {
   command: Command = new Command()
   argv: string[] = []
@@ -25,8 +25,11 @@ export default class EntryService {
       boolean: ['version', 'help'],
     })
     const command: string = args._[0]
-    log(`command: ${command}`)
-    log(`args: ${JSON.stringify(args)}`)
+    map.set('command', command)
+    map.set('args', args)
+    map.set('debug', args.debug)
+    log(`command`, command)
+    log(`args`, args)
     if (command) {
       this.command.execCommand(command, args)
     } else {
@@ -38,6 +41,7 @@ export default class EntryService {
           'Options:',
           '  -v, --version  查询版本号',
           '  -h, --help     显示帮助',
+          '  --debug        输出详细日志',
           'Commands:',
         ]
         loggerTips.forEach(item => {

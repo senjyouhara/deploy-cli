@@ -25,9 +25,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "rimraf lib && cross-env isDev=true webpack -w",
-    "dev:rollup": "rimraf lib && cross-env  isRollup=true isDev=true rollup -c rollup.config.js",
-    "dist": "rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env isDev=true BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && cross-env isDev=true isRollup=true NODE_ENV=development rollup -c rollup.config.js",
+    "dev": "rimraf lib && cross-env webpack -w",
+    "dev:rollup": "rimraf lib && cross-env  isRollup=true rollup -c rollup.config.js",
+    "dist": "rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && cross-env isRollup=true NODE_ENV=development rollup -c rollup.config.js",
     "dist:build": "cross-env rimraf es && rimraf lib && dts-bundle-generator -o lib/index.d.ts ./src/index.ts && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && npm run build:rollup",
     "dist:tsc:build": "cross-env rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && npm run build:rollup",
     "build": "rimraf lib && cross-env NODE_ENV=development webpack",

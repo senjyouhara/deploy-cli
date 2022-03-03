@@ -27,9 +27,10 @@ export default class ConfigProcessService {
 
   saveFile(json: ConfigOptions) {
     const spinner = loading('正在生成配置文件...')
-    const exportStr = `module.exports = ${JSON.stringify(json, null, 2)}`
+    const requireStr = `import { ${defineConfig.name} } from '${process.env.NAME}'`
+    const exportStr = `${requireStr}\nexport default ${defineConfig.name}(${JSON.stringify(json, null, 2)})`
 
-    const filePath = join(process.cwd(), getFileName(json.platformName))
+    const filePath = join(process.cwd(), getFileName(json.platformName), '.ts')
     const fileData = `${exportStr}`
     saveFile(filePath, fileData)
     spinner.succeed(chalk.green('生成完成, 请进行查看...'))

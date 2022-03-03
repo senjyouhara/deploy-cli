@@ -25,7 +25,10 @@ export const platformConfig = [
       const platformName = input.trim()
       // @ts-ignore
       var done = this.async()
-      if (fs.existsSync(`${join(process.cwd(), getFileName(platformName))}`)) {
+      if (
+        fs.existsSync(`${join(process.cwd(), getFileName(platformName), '.ts')}`) ||
+        fs.existsSync(`${join(process.cwd(), getFileName(platformName), '.js')}`)
+      ) {
         done('该环境的配置文件已存在，请确认')
         setTimeout(() => {
           process.exit(-1)

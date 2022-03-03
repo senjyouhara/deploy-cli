@@ -1,7 +1,6 @@
 const packageJson = require('./package.json')
 
 const replaceObj = {
-  "process.env.isDev": process.env.isDev,
   "process.env.NODE_ENV": process.env.NODE_ENV,
   "process.env.PKG_VERSION": packageJson.version,
   "process.env.NAME": packageJson.name,

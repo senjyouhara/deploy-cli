@@ -1,11 +1,12 @@
 import path from 'path'
 import fs from 'fs'
+import map from './global'
 
 export const getVersion = () => {
   return 'V' + process.env.PKG_VERSION
 }
 
-export const DEFAULT_FILE_NAME = 'deploy.config.js'
+export const DEFAULT_FILE_NAME = 'deploy.config'
 
 export const getFileName = (platformName?: string) => (platformName && platformName + '.') + DEFAULT_FILE_NAME
 
@@ -49,5 +50,5 @@ export const scanPathList = (basePath: string) => {
 }
 
 export function log(...args: any) {
-  process.env.isDev && console.log(...args)
+  map.get('debug') && console.log(...args)
 }

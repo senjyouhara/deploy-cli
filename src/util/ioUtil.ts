@@ -1,13 +1,36 @@
 import fs from 'fs'
-
+import vm from 'vm'
+// @ts-ignore
+import * as babel from '@babel/core'
+import { log } from './index'
 export const saveFile = (path: string, data: string | NodeJS.ArrayBufferView) => {
   fs.writeFileSync(path, data, { encoding: 'utf8' })
 }
 
-export const readLocalFile = (path: string, fn: (str: string) => string) => {
-  let f = fs.readFileSync(path, 'utf-8')
-  f = fn(f)
-  return new Function('return (' + f + ')')()
+export const readLocalFile = (path: string) => {
+  const options = {
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          modules: 'cjs',
+          targets: {
+            esmodules: true,
+          },
+        },
+      ],
+      '@babel/preset-typescript',
+    ],
+    plugins: ['@babel/plugin-external-helpers', '@babel/plugin-transform-runtime'],
+  }
+  const data = babel.transformFileSync(path, options).code
+  const wrapper = ['(function(exports, require, module, __filename,__dirname){', '})']
+  let fnStr = wrapper[0] + data + wrapper[1]
+  let wrapperFn = vm.runInThisContext(fnStr)
+  let value = {}
+  wrapperFn.call(value, value, require, value, __filename, __dirname)
+  log(value, 'data')
+  return value
 }
 
 export function deleteFolder(path: string) {

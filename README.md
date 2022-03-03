@@ -4,6 +4,10 @@
 有项目的部署方式，进行归纳、总结后，研发了一套针对于公司项目的部署场景，适应于现代化项目构建的脚手架。该项目的初衷是为了
 解决上述相关问题。并在不失灵活性的同时在一定程度上秉持配置文件的规范与多样化。
 
+
+## 安装
+`npm i -D @kamisiro/deploy-cli`
+
 ## 脚手架运行命令行
 
 在命令行通过 @kamisiro/deploy-cli -h 可以获取相关帮助信息
@@ -13,15 +17,18 @@ Usage: @kamisiro/deploy-cli [Options] Or ibingli-deploy-cli <command> [options]
 Options:
   -v, --version  查询版本号
   -h, --help     显示帮助
+  --debug        输出详细日志
 Commands:
   init      通过命令行创建文件
   init -d      静默创建默认文件
+  init -d  --debug     静默创建默认文件并输出详细日志
   deploy      部署默认环境应用
   deploy --mode=prod      部署prod环境应用
+  deploy --mode=prod --debug     部署prod环境应用并输出详细日志
 
 ```
 
-`@kamisiro/deploy-cli -v` 获取版本信息
+`npx @kamisiro/deploy-cli -v` 获取版本信息
 
 ### 调用命令
 

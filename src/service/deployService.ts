@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { ConfigOptions, DeployCommandType, ScriptType, PathInfoType, CosType } from '../types/type'
 import { error, info } from '../util/oraUtil'
-import {DEFAULT_FILE_NAME, log, resolve} from '../util'
+import { DEFAULT_FILE_NAME, log, resolve } from '../util'
 import { deployHooksUtils } from '../config/config'
 import InstallServiceImpl from './install/installServiceImpl'
 import BuildService from './build/buildService'
@@ -11,9 +11,9 @@ import ConfigParseService from './configParse/configParseService'
 import CosServiceImpl from './cos/cosServiceImpl'
 import SshService from './server/sshService'
 import { onProcessEvent } from '../process'
+import { readLocalFile } from '../util/ioUtil'
 
 export default class DeployService {
-  packages: PathInfoType[] = []
   configPaths: string[] = []
   configFiles: string[] = []
   configFile: ConfigOptions | null = null
@@ -35,19 +35,21 @@ export default class DeployService {
   }
 
   init(obj: DeployCommandType) {
-    this.configPaths = [resolve(DEFAULT_FILE_NAME)]
-    this.configFiles = [DEFAULT_FILE_NAME]
-    if (obj.mode) {
-      this.configPaths.push(resolve(obj.mode + '.' + DEFAULT_FILE_NAME))
-      this.configFiles.push(obj.mode + '.' + DEFAULT_FILE_NAME)
-    }
+    let fileNames = obj.mode
+      ? [
+          `${obj.mode}.${DEFAULT_FILE_NAME}.ts`,
+          `${obj.mode}.${DEFAULT_FILE_NAME}.js`,
+          `${DEFAULT_FILE_NAME}.ts`,
+          `${DEFAULT_FILE_NAME}.js`,
+        ]
+      : [`${DEFAULT_FILE_NAME}.ts`, `${DEFAULT_FILE_NAME}.js`]
+    const filePaths = fileNames.map(v => resolve(v)).filter(v => fs.existsSync(v))
+    fileNames = fileNames.filter(v => fs.existsSync(resolve(v)))
 
-    this.configPaths.forEach((v, i) => {
-      if (!fs.existsSync(v)) {
-        error(`找不到${this.configFiles[i]}文件，请检查`)
-        process.exit(-1)
-      }
-    })
+    if (filePaths.length <= 0) {
+      error(`找不到${obj.mode ? obj.mode + '.' + DEFAULT_FILE_NAME : DEFAULT_FILE_NAME}文件，请检查！`)
+      process.exit(-1)
+    }
 
     log(`configPaths: `, this.configPaths)
   }
@@ -59,11 +61,10 @@ export default class DeployService {
       try {
         log(`filePath: `, filePath)
         log(`fileName: `, fileName)
+        const localFile: any = readLocalFile(filePath)
+        log(`localFile: `, localFile)
         // eslint-disable-next-line no-eval
-        const localFile = eval(`require('${filePath}')`)
-        log(`localFile: `,localFile)
-        // eslint-disable-next-line no-eval
-        this.configFile = Object.assign({}, this.configFile, localFile)
+        this.configFile = Object.assign({}, this.configFile, localFile.default)
       } catch (e) {
         console.log(`error: `, e)
         error(`${fileName}文件读取失败, 请检查！`)

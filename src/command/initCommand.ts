@@ -61,7 +61,10 @@ export default class InitCommand implements BaseCommand {
   }
 
   configHandler(data: ConfigOptions) {
-    if (fs.existsSync(`${join(process.cwd(), getFileName(data.platformName))}`)) {
+    if (
+      fs.existsSync(`${join(process.cwd(), getFileName(data.platformName), '.ts')}`) ||
+      fs.existsSync(`${join(process.cwd(), getFileName(data.platformName), '.js')}`)
+    ) {
       error('该环境的配置文件已存在，请确认')
       process.exit(-1)
       return
