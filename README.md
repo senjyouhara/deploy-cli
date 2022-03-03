@@ -186,3 +186,85 @@ module.exports = {
   "serverScript": "echo success"
 }
 ```
+
+
+example2:
+
+```
+
+更多配置信息请到@kamisiro/deploy-cli/lib/types/type.d.ts里查看
+
+module.exports = {
+	"projectName": "ant-design-pro",
+	"platformName": "",
+	"script": [{
+		pattern: /app[0-9].*$/,
+		command: "npm run build",
+		fileName(name, command) {
+			const split = command.split(' ')
+			return name + '_' + split[split.length - 1]
+		},
+		"postScript": "echo 123",
+	}, {
+		path: "demo1",
+		command: "npm run build",
+		fileName(name, command) {
+			const split = command.split(' ')
+			return name + '_' + split[split.length - 1]
+		},
+		"postScript": "echo 456",
+	}, {
+		other: true,
+		command: "npm run build",
+		fileName(name, command) {
+			const split = command.split(' ')
+			return name + '_' + split[split.length - 1]
+		},
+		exclude: 'demo',
+		"postScript": "echo 789",
+	}, {
+		path: "demo2",
+		command: "npm run build:test",
+		fileName(name, command) {
+			const split = command.split(' ')
+			return name + '_buildtest'
+		},
+		"postScript": "echo 123",
+	}, {
+		other: true,
+		command: "npm run build:test",
+		fileName(name, command) {
+			const split = command.split(' ')
+			return name + '_buildtest'
+		},
+		exclude: ['case_lib', /app[0-9].*$/],
+		"postScript": "echo ccccc",
+	},  {
+		other: true,
+		command: "npm run build:dev",
+		fileName(name, command) {
+			const split = command.split(' ')
+			return name + '_builddev'
+		},
+		exclude: [ /demo[0-9].*$/],
+		"postScript": "echo demo",
+	}],
+	"isInstall": true,
+	"postScript": "echo 123456",
+    "host": "你的服务器ip",
+	"port": 2789,
+    "username": "你的服务器用户名",
+    "password": "你的服务器密码",
+    "privateKey": "你的私钥路径",
+	"passphrase": "",
+	"isRemoveCosFile": false,
+	"secretId": "",
+	"secretKey": "",
+	"outputPath": "dist",
+	"serverPath": "/test2",
+	"isBakFile": true,
+	"bakFileName": "",
+	"isRemoveServerFile": true,
+	"serverScript": "echo 123"
+}
+```
