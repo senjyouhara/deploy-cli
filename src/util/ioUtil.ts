@@ -32,7 +32,7 @@ export const readLocalFile = (path: string) => {
   log(data, 'code')
   let wrapperFn = vm.runInThisContext(fnStr, contextifiedObject)
   let value = {}
-  wrapperFn.call(value, value, require, value, __filename, __dirname)
+  wrapperFn.call(value, require, value, __filename, __dirname)
   log(value, contextifiedObject, 'data')
   return value
 }
