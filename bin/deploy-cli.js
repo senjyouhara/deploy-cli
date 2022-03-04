@@ -1,3 +1,3 @@
 #!/usr/bin/env node
-const Service = require('../es')
+const Service = require('../lib')
 new Service.EntryService(process.argv).run()

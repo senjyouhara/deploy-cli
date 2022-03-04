@@ -46,7 +46,18 @@ export default class DeployService {
     const filePaths = fileNames.map(v => resolve(v)).filter(v => fs.existsSync(v))
     fileNames = fileNames.filter(v => fs.existsSync(resolve(v)))
 
-    if (filePaths.length <= 0) {
+    const isModeFile = filePaths.some(item => item.startsWith(`${obj.mode}.${DEFAULT_FILE_NAME}`))
+    const isFile = filePaths.some(item => item.startsWith(`${DEFAULT_FILE_NAME}`))
+
+    if (obj.mode && !isModeFile) {
+      error(`找不到${obj.mode + '.' + DEFAULT_FILE_NAME}文件，请检查！`)
+      process.exit(-1)
+    }
+    if (!obj.mode && !isFile) {
+      error(`找不到${DEFAULT_FILE_NAME}文件，请检查！`)
+      process.exit(-1)
+    }
+    if (filePaths.length == 0) {
       error(`找不到${obj.mode ? obj.mode + '.' + DEFAULT_FILE_NAME : DEFAULT_FILE_NAME}文件，请检查！`)
       process.exit(-1)
     }
