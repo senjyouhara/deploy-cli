@@ -58,8 +58,8 @@ export type PathInfoType = { name: string; path: string }
 
 export type ScriptType = {
   path?: string
-  postScript: string | string[]
-  serverScript: string | string[]
+  postScript?: string | string[]
+  serverScript?: string | string[]
   command: string
   pattern?: RegExp
   other?: boolean
