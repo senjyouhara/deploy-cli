@@ -11,6 +11,10 @@
   "bin": {
     "@kamisiro/deploy-cli": "bin/deploy-cli.js"
   },
+  "keywords": [
+    "deploy",
+    "部署"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/senjyouhara/deploy-cli.git"
