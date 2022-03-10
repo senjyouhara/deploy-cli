@@ -146,5 +146,3 @@ export interface DeployCommandType {
 export interface InitCommandType {
   d: boolean
 }
-
-export declare function defineConfig(config: ConfigOptions): ConfigOptions

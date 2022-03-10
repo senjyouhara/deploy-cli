@@ -1,2 +1,2 @@
-export type { defineConfig } from './types/type'
 export { default as EntryService } from './entryService'
+export { defineConfig } from './config/config'
