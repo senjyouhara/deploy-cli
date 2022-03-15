@@ -9,6 +9,7 @@ import { ConfigOptions, PathInfoType } from '../../types/type'
 import CMD from 'node-cmd'
 import { deployHooks, deployHooksUtils } from '../../config/config'
 import { log } from '../../util'
+import { logger } from '../../../../react/deploy-cli/src/logger'
 
 export default class InstallServiceImpl extends AbstractDeployComponentService implements InstallService {
   currentService: InstallService
@@ -20,8 +21,10 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
     super()
     var npmInstallServiceImpl = new NpmInstallServiceImpl()
     var pnpmInstallServiceImpl = new PnpmInstallServiceImpl()
+    var yarnInstallServiceImpl = new YarnInstallServiceImpl()
 
-    npmInstallServiceImpl.setNext(pnpmInstallServiceImpl)
+    npmInstallServiceImpl.setNext(yarnInstallServiceImpl)
+    yarnInstallServiceImpl.setNext(pnpmInstallServiceImpl)
 
     this.currentService = npmInstallServiceImpl
     this.service = npmInstallServiceImpl
@@ -42,29 +45,27 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
 
   // @ts-ignore
   async exec(packages: PathInfoType[]): Promise<any> {
-    log(`packages: `, packages)
+    logger.info(`packages: ${JSON.stringify(packages)}`)
+
     for (const v of packages) {
       deployHooksUtils.run('preInstall', this.config!, v)
-      this.currentService = this.service
-
-      const service = this.supportHandler()
       process.chdir(v.path)
-      const err = await service.exec()
+      const err = await this.currentService.exec()
       if (err) {
-        log(`error: `, err)
+        logger.print('error', err)
         process.exit(1)
       }
 
-      deployHooksUtils.run('postInstall', this.config!, v, service.getType(), !err)
+      deployHooksUtils.run('postInstall', this.config!, v, this.currentService.getType(), !err)
     }
   }
 
   getNext(): InstallService | undefined {
-    return this.supportHandler().getNext()
+    return this.currentService.getNext()
   }
 
   getType(): string {
-    return this.supportHandler().getType()
+    return this.currentService.getType()
   }
 
   getSupportChild(service: InstallService): InstallService | null {
@@ -75,20 +76,11 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
     if (this.installType && service.getType() == this.installType) {
       return service
     }
+    let result = this.getSupportChild(service.getNext()!)
 
-    if (service.getNext()) {
-      let result = service
-
-      // eslint-disable-next-line no-unmodified-loop-condition
-      while (result && result.isSupport()) {
-        if (result.isLockFile()) {
-          return result
-        } else {
-          result = this.getSupportChild(result.getNext()!)!
-          if (this.installType && result.getType() == this.installType) {
-            return result
-          }
-        }
+    if (result && result.isSupport()) {
+      if (result.isLockFile()) {
+        return result
       }
     }
 
@@ -96,20 +88,25 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
   }
 
   supportHandler() {
+    this.currentService = this.service
+
     let service = this.getSupportChild(this.currentService)
 
-    if (!service || !service.isSupport()) {
+    if (!service! || !service.isSupport()) {
       error('没有支持进行install的工具，请检查')
       process.exit(1)
     }
+
+    this.currentService = service
 
     return service
   }
 
   isSupport(): boolean {
-    const service = this.supportHandler()
-    return service.isSupport()
+    return this.currentService.isSupport()
   }
 
-  init(config: any): any {}
+  init(config: any): any {
+    this.supportHandler()
+  }
 }

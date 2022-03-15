@@ -10,10 +10,10 @@
 
 ## 脚手架运行命令行
 
-在命令行通过 @kamisiro/deploy-cli -h 可以获取相关帮助信息
+在命令行通过 kamisiro-deploy-cli -h 可以获取相关帮助信息
 
 ```
-Usage: @kamisiro/deploy-cli [Options] Or ibingli-deploy-cli <command> [options]
+Usage: kamisiro-deploy-cli [Options] Or kamisiro-deploy-cli <command> [options]
 Options:
   -v, --version  查询版本号
   -h, --help     显示帮助
@@ -28,19 +28,20 @@ Commands:
 
 ```
 
-`npx @kamisiro/deploy-cli -v` 获取版本信息
+`npx kamisiro-deploy-cli -v` 获取版本信息
 
 ### 调用命令
 
 - init 生成部署配置文件
 
-  - `@kamisiro/deploy-cli init` 通过控制台进行交互方式生成配置文件
-  - `@kamisiro/deploy-cli init -d` 通过默认参数生成配置文件
+  - `kamisiro-deploy-cli init` 通过控制台进行交互方式生成配置文件
+  - `kamisiro-deploy-cli init -d` 通过默认参数生成配置文件
 
 - deploy 执行部署命令
-  - `@kamisiro/deploy-cli deploy` 通过加载 deploy.config.js 文件当做配置文件执行部署命令
-  - `@kamisiro/deploy-cli deploy --mode=prod` 通过加载 prod.deploy.config.js 文件与 deploy.config.js 文件进行合并处理后当
+  - `kamisiro-deploy-cli deploy` 通过加载 deploy.config.js 文件当做配置文件执行部署命令
+  - `kamisiro-deploy-cli deploy --mode=prod` 通过加载 prod.deploy.config.js 文件与 deploy.config.js 文件进行合并处理后当
     做配置文件执行部署命令
+  - `kamisiro-deploy-cli deploy --mode=prod --host=127.0.0.1 --port=22 --username=root --password=123 --privateKey=key --passphrase=123` 可通过参数注入覆盖配置文件内部的配置
 
 ## 配置文件
 
@@ -110,7 +111,9 @@ interface ConfigOptions {
    */
   script: string | ScriptType[]
   // 是否调用打包命令前执行npm i 一般用作于ci环境
-  isInstall: boolean
+  // 如果为'npm' | 'yarn' | 'pnpm'  则调用对应的包管理器进行安装
+  // 如果为false 则不进行安装  如果为true  则搜索lock文件 通过lock文件对应的包管理器进行安装  否则使用npm进行安装
+  install: boolean | 'npm' | 'yarn' | 'pnpm'
   // 打包执行完成后后置命令 用于在打包完成后执行一些后置处理什么的
   postScript: string | string[]
   // 本地打包生成目录

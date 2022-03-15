@@ -37,7 +37,7 @@ export default class EntryService {
         console.log(`Version: ${getVersion()}`)
       } else {
         const loggerTips = [
-          'Usage: senjyouhara-deploy-cli [Options] Or senjyouhara-deploy-cli <command> [options]',
+          'Usage: kamisiro-deploy-cli [Options] Or kamisiro-deploy-cli <command> [options]',
           'Options:',
           '  -v, --version  查询版本号',
           '  -h, --help     显示帮助',

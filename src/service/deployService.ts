@@ -82,7 +82,7 @@ export default class DeployService {
 
         if (this.commandConfigs) {
           for (let commandConfigsKey in this.commandConfigs) {
-            if (this.configFile![commandConfigsKey]) {
+            if (this.commandConfigs[commandConfigsKey] && Object.keys(this.configFile!).includes(commandConfigsKey)) {
               this.configFile![commandConfigsKey] = this.commandConfigs[commandConfigsKey]
             }
           }

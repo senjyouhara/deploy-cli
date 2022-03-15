@@ -9,7 +9,7 @@
   "module": "es/index.js",
   "types": "lib/index.d.ts",
   "bin": {
-    "@kamisiro/deploy-cli": "bin/deploy-cli.js"
+    "kamisiro-deploy-cli": "bin/deploy-cli.js"
   },
   "keywords": [
     "deploy",
