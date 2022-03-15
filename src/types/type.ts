@@ -132,14 +132,14 @@ export interface ConfigOptions extends SshType, CosType, ServerOptionsType {
    */
   script: string | ScriptType[]
   // 是否调用打包命令前执行npm i 一般用作于ci环境
-  isInstall: boolean
+  install: boolean
   // 打包执行完成后后置命令 用于在打包完成后执行一些后置处理什么的
   postScript: string | string[]
   // 本地打包生成目录
   outputPath: string
 }
 
-export interface DeployCommandType {
+export interface DeployCommandType extends ConfigOptions {
   mode: string
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@kamisiro/deploy-cli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "前端自动化部署脚手架",
   "author": {
     "name": "senjyouhara"
@@ -73,6 +73,11 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-define-patterns": "^1.0.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "@babel/plugin-external-helpers": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "cross-env": "^7.0.3",
     "dts-bundle-generator": "^6.5.0",
     "eslint": "^7.32.0",
@@ -100,19 +105,11 @@
   "dependencies": {
     "@babel/cli": "^7.16.8",
     "@babel/core": "^7.16.12",
-    "@babel/plugin-external-helpers": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/plugin-transform-typescript": "^7.16.8",
-    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
-    "@babel/runtime": "^7.3.1",
     "ali-oss": "^6.17.1",
     "archiver": "5.3.0",
     "axios": "^0.25.0",
-    "babel-loader": "^8.2.3",
-    "babel-plugin-define-patterns": "^1.0.0",
-    "babel-plugin-module-resolver": "^4.1.0",
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "cos-nodejs-sdk-v5": "^2.11.6",
@@ -125,7 +122,6 @@
     "node-ssh": "^11.0.0",
     "ora": "^5.1.0",
     "path": "^0.12.7",
-    "path-to-regexp": "^6.2.0",
     "prettier": "^2.1.1"
   }
 }

@@ -19,6 +19,7 @@ export default class DeployService {
   configFile: ConfigOptions | null = null
   configBranch: string[] = []
   service: AbstractDeployComponentService
+  commandConfigs: DeployCommandType | null = null
 
   constructor() {
     let configParseService = new ConfigParseService()
@@ -78,6 +79,14 @@ export default class DeployService {
         log(`localFile: `, localFile)
         // eslint-disable-next-line no-eval
         this.configFile = Object.assign({}, this.configFile, localFile.default)
+
+        if (this.commandConfigs) {
+          for (let commandConfigsKey in this.commandConfigs) {
+            if (this.configFile![commandConfigsKey]) {
+              this.configFile![commandConfigsKey] = this.commandConfigs[commandConfigsKey]
+            }
+          }
+        }
       } catch (e) {
         console.log(`error: `, e)
         error(`${fileName}文件读取失败, 请检查！`)
@@ -87,6 +96,7 @@ export default class DeployService {
   }
 
   async run(obj: DeployCommandType) {
+    this.commandConfigs = obj
     onProcessEvent.onProcess()
     this.init(obj)
     this.readConfigFile()
