@@ -73,7 +73,7 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
       return null
     }
 
-    if (this.installType && service.getType() == this.installType) {
+    if (service.getType() && service.getType().toLocaleLowerCase() == this.installType.toLocaleLowerCase()) {
       return service
     }
     let result = this.getSupportChild(service.getNext()!)
