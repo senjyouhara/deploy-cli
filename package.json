@@ -88,6 +88,7 @@
     "husky": "4.3.8",
     "lint-staged": "11.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
+    "prettier": "^2.1.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.18.2",
     "rollup-plugin-cleanup": "^3.2.1",
@@ -121,7 +122,6 @@
     "node-cmd": "^5.0.0",
     "node-ssh": "^11.0.0",
     "ora": "^5.1.0",
-    "path": "^0.12.7",
-    "prettier": "^2.1.1"
+    "path": "^0.12.7"
   }
 }
