@@ -9,7 +9,6 @@ import { ConfigOptions, PathInfoType } from '../../types/type'
 import CMD from 'node-cmd'
 import { deployHooks, deployHooksUtils } from '../../config/config'
 import { log } from '../../util'
-import { logger } from '../../../../react/deploy-cli/src/logger'
 
 export default class InstallServiceImpl extends AbstractDeployComponentService implements InstallService {
   currentService: InstallService
@@ -45,14 +44,14 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
 
   // @ts-ignore
   async exec(packages: PathInfoType[]): Promise<any> {
-    logger.info(`packages: ${JSON.stringify(packages)}`)
+    log(`packages: `, packages)
 
     for (const v of packages) {
       deployHooksUtils.run('preInstall', this.config!, v)
       process.chdir(v.path)
       const err = await this.currentService.exec()
       if (err) {
-        logger.print('error', err)
+        log(`error: `, err)
         process.exit(1)
       }
 

@@ -1,12 +1,11 @@
 import AbstractDeployComponentService from '../abstractDeployComponentService'
-import path from 'path'
 import LernaConfigurationParseService from './lernaConfigurationParseService'
 import PNPMConfigurationParseService from './pnpmConfigurationParseService'
 import fs from 'fs'
 import { info } from '../../util/oraUtil'
 import AbstractConfigurationParseService from './abstractConfigurationParseService'
 import { ConfigOptions, PathInfoType } from '../../types/type'
-import {join, log, resolve} from '../../util'
+import { join, log, resolve } from '../../util'
 
 export default class ConfigParseService extends AbstractDeployComponentService {
   init(data: any) {}
@@ -40,7 +39,7 @@ export default class ConfigParseService extends AbstractDeployComponentService {
     this.packages = this.configurationParseServiceList.flatMap(v => v.packagesParseHandle())
     this.packages.unshift({ path: join(process.cwd()), name: 'root' })
 
-    log(`packages: `,this.packages)
+    log(`packages: `, this.packages)
 
     return { flag: true, data: this.packages }
   }
