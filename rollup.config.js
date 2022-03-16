@@ -84,15 +84,16 @@ const PLUGINS = (plugins = {}) => {
       }),
     // postcss({ extract: plugins.cssPlugin, plugins: [autoprefixer, precss] }),
     excludeDependenciesFromBundle(),
-    typescript(),
+    typescript(plugins.typescript),
     PRODUCTION && filesize(),
     image(),
-    // PRODUCTION &&
-    //   terser({
-    //     compress: {
-    //       pure_funcs: ['console.log'], // 去掉console.log函数
-    //     },
-    //   }),
+    PRODUCTION &&
+      plugins.terser &&
+      terser({
+        compress: {
+          pure_funcs: ['console.log'], // 去掉console.log函数
+        },
+      }),
   ].filter(Boolean)
 }
 
@@ -100,14 +101,17 @@ const OUTPUT_DATA = dir => {
   const umd = {
     file: `./lib/${dir.replace('.ts', '.js')}`,
     format: 'umd',
+    dir: 'lib',
   }
   const cjs = {
     file: `./lib/${dir.replace('.ts', '.js')}`,
     format: 'cjs',
+    dir: 'cjs',
   }
   const es = {
     file: `./es/${dir.replace('.ts', '.js')}`,
     format: 'es',
+    dir: 'es',
   }
 
   return [{ ...umd }, { ...es }, { ...cjs }]
@@ -146,95 +150,55 @@ const getScanPath = basePath => _getScanPath(basePath, basePath)
 const scanPathList = getScanPath(path.resolve(__dirname, 'src'))
 console.log(scanPathList, 'scanPathList')
 
+const inputAll = scanPathList.reduce((t, c) => {
+  t[c.pathName.replace('.ts', '')] = c.path
+  return t
+}, {})
+
+const bundler = (input, output, filter, plugin) => {
+  let data = OUTPUT_DATA('index.ts')
+  if (filter) {
+    data = data.filter(filter)
+  }
+  return data.map(({ file, format, dir }) => ({
+    input,
+    output: {
+      format,
+      globals: GLOBALS,
+      ...output(file, format, dir),
+    },
+    watch: WATCH,
+    external: ['cjs', 'es'].includes(format) ? CJS_AND_ES_EXTERNALS : EXTERNAL,
+    plugins: PLUGINS(plugin),
+  }))
+}
+
+const bundlerOutput = isMin => (file, format, dir) => ({
+  file: `${dir}/bundle${isMin ? '.min' : ''}.js`,
+  name: OUTPUT_NAME,
+})
+
 const arr = []
 const config = arr.concat.apply(
   [],
-  OUTPUT_DATA('index.ts')
-    .filter(v => v.format === 'cjs')
-    .map(({ file, format }) => ({
-      input: './src/index.ts',
-      output: {
-        file: `${file}`,
-        format,
-        name: OUTPUT_NAME,
-        globals: GLOBALS,
-      },
-      watch: WATCH,
-      external: ['cjs', 'es'].includes(format) ? CJS_AND_ES_EXTERNALS : EXTERNAL,
-      plugins: PLUGINS(),
-    })),
-  // .concat(
-  //   scanPathList.map(({ path, pathName }) =>
-  //     OUTPUT_DATA(pathName)
-  //       .filter(v => v.format !== 'umd')
-  //       .map(({ file, format }) => ({
-  //         input: path,
-  //         output: {
-  //           file: `${file}`,
-  //           format,
-  //           exports: 'auto',
-  //           // name: OUTPUT_NAME,
-  //           globals: GLOBALS,
-  //         },
-  //         // watch: WATCH,
-  //         external: ['cjs', 'es'].includes(format) ? CJS_AND_ES_EXTERNALS : EXTERNAL,
-  //         plugins: PLUGINS(),
-  //       })),
-  //   ),
-  // ),
+  bundler('./src/index.ts', bundlerOutput())
+    .concat(bundler('./src/index.ts', bundlerOutput(true), null, { terser: true }))
+    .concat(
+      bundler(
+        inputAll,
+        (file, format, dir) => ({ dir }),
+        v => v.format !== 'umd',
+        {
+          typescript: {
+            compilerOptions: {
+              outDir: null,
+              declaration: null,
+              declarationMap: null,
+            },
+          },
+        },
+      ),
+    ),
 )
 
 export default config
-
-/**
- * @type {import('rollup')}
- */
-// const a = {
-//   // 入口文件
-//   // input: scanPathList.reduce((t, c) => {
-//   //   if (!t[c.pathName]) {
-//   //     t[c.pathName] = c.path
-//   //   }
-//   //   return t
-//   // }, {}),
-//   input: './src/index.ts',
-//   output: [
-//     {
-//       // 打包名称
-//       name: OUTPUT_NAME,
-//       // 文件顶部信息
-//       // banner: '#!/usr/bin/env node',
-//       file: 'lib/index.js',
-//       format: 'cjs',
-//       sourcemap: false,
-//     },
-//   ],
-//   external: ['@kamisiro/deploy-cli', 'tslib', /@babel\/runtime/],
-//   plugins: [
-//     // cleanup(),
-//     resolve({
-//       jsnext: true, // 该属性是指定将Node包转换为ES2015模块
-//       main: true,
-//       browser: false,
-//     }),
-//     commonjs(),
-//     babel({
-//       exclude: 'node_modules/**', // 仅仅转译我们的源码
-//       // babelHelpers: 'runtime',
-//       runtimeHelpers: true,
-//       extensions: ['.js', '.ts'],
-//     }),
-//     json({
-//       include: ['src/**', 'package.json'],
-//     }),
-//     excludeDependenciesFromBundle(),
-//     typescript(),
-//     // sourcemaps(),
-//     // isProd &&
-//     //   terser({
-//     //     compress: {
-//     //       pure_funcs: ['console.log'], // 去掉console.log函数
-//     //     },
-//     //   }),
-//   ],
-// }

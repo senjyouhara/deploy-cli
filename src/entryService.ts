@@ -5,9 +5,9 @@ import { onProcessEvent } from './process'
 import map from './util/global'
 export default class EntryService {
   command: Command = new Command()
-  argv: string[] = []
+  argv: any[] = []
 
-  constructor(argv: string[]) {
+  constructor(argv: any[]) {
     this.argv = argv || []
   }
 
@@ -17,7 +17,7 @@ export default class EntryService {
   }
 
   parseArgs() {
-    const args = minimist(this.argv.slice(2), {
+    const args: any = minimist(this.argv.slice(2), {
       alias: {
         version: ['v'],
         help: ['h'],
