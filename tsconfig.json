@@ -4,7 +4,7 @@
     "module": "esnext",
     "target": "es6",
     "lib": ["esnext", "dom"],
-    "sourceMap": false,
+    "sourceMap": true,
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": false,

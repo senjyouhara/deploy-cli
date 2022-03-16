@@ -2,7 +2,6 @@ import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 import path from 'path'
 import fs from 'fs'
-// import sourcemaps from 'rollup-plugin-sourcemaps'
 import commonjs from '@rollup/plugin-commonjs'
 import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle'
 import postcss from 'rollup-plugin-postcss'
@@ -148,7 +147,7 @@ const _getScanPath = (basePath, fullPath) => {
 /** 获取入口文件 */
 const getScanPath = basePath => _getScanPath(basePath, basePath)
 const scanPathList = getScanPath(path.resolve(__dirname, 'src'))
-console.log(scanPathList, 'scanPathList')
+// console.log(scanPathList, 'scanPathList')
 
 const inputAll = scanPathList.reduce((t, c) => {
   t[c.pathName.replace('.ts', '')] = c.path
@@ -160,17 +159,20 @@ const bundler = (input, output, filter, plugin) => {
   if (filter) {
     data = data.filter(filter)
   }
-  return data.map(({ file, format, dir }) => ({
+  return [{
     input,
-    output: {
+    output: data.map(({ file, format, dir }) => ({
       format,
       globals: GLOBALS,
+      exports: 'auto',
       ...output(file, format, dir),
-    },
+    })),
     watch: WATCH,
-    external: ['cjs', 'es'].includes(format) ? CJS_AND_ES_EXTERNALS : EXTERNAL,
+    external: EXTERNAL,
+    // external: ['cjs', 'es'].includes(format) ? CJS_AND_ES_EXTERNALS : EXTERNAL,
     plugins: PLUGINS(plugin),
-  }))
+
+  }]
 }
 
 const bundlerOutput = isMin => (file, format, dir) => ({

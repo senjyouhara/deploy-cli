@@ -35,7 +35,7 @@
     "dist:build": "cross-env rimraf es && rimraf cjs && rimraf lib && dts-bundle-generator -o lib/index.d.ts ./src/index.ts && npm run build:rollup",
     "dist:tsc:build": "cross-env rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && npm run build:rollup",
     "build": "rimraf lib && cross-env NODE_ENV=development webpack",
-    "build:rollup": "cross-env isRollup=true production=true NODE_ENV=development rollup -c rollup.config.js",
+    "build:rollup": "cross-env isRollup=true production=true NODE_ENV=development rollup -c rollup.config.js --sourcemap",
     "prepare": "npx husky install && npx husky set .husky/pre-commit \"npx lint-staged --allow-empty\"",
     "lint": "prettier --parser=typescript --write src",
     "lint-staged": "lint-staged"
@@ -103,7 +103,6 @@
     "rollup-plugin-node-externals": "^4.0.0",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-sourcemaps": "^0.6.2",
     "rollup-plugin-terser": "^7.0.2",
     "terser-webpack-plugin": "^4.2.3",
     "ts-loader": "^5.2.0",
