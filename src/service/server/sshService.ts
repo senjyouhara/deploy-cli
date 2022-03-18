@@ -97,6 +97,7 @@ export default class SshService extends AbstractDeployComponentService {
         })
         .then(null, err => {
           err && console.log(`error: `, err)
+          process.exit(1)
         })
 
       spinner.stop()
@@ -126,6 +127,7 @@ export default class SshService extends AbstractDeployComponentService {
       .then(({ stderr }) => {
         if (stderr) {
           error('STDERR: ' + stderr)
+          process.exit(1)
           return Promise.reject(stderr)
         }
         succeed(`解压 ${fileName} 成功 `)
@@ -172,9 +174,16 @@ export default class SshService extends AbstractDeployComponentService {
         error(`因安全策略限制，无法执行该命令 ${i} , 请修改`)
         continue
       }
-      await this.ssh.execCommand(`${i}`).then(({ stdout }) => {
+      let flag = false
+      await this.ssh.execCommand(`${i}`).then(({ stdout, stderr }) => {
         info(`执行脚本输出: ${JSON.stringify(stdout)}`)
+        if (stderr) {
+          flag = true
+        }
       })
+      if (flag) {
+        break
+      }
     }
   }
 
