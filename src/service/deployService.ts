@@ -12,6 +12,7 @@ import CosServiceImpl from './cos/cosServiceImpl'
 import SshService from './server/sshService'
 import { onProcessEvent } from '../process'
 import { readLocalFile } from '../util/ioUtil'
+import { platformConfig } from '../config/config'
 
 export default class DeployService {
   configPaths: string[] = []
@@ -69,6 +70,8 @@ export default class DeployService {
   }
 
   readConfigFile() {
+    const allFieldNames = platformConfig.map(v => v.name)
+
     for (let i in this.configPaths) {
       const fileName = this.configFileNames[i]
       const filePath = this.configPaths[i]
@@ -82,7 +85,7 @@ export default class DeployService {
 
         if (this.commandConfigs) {
           for (let commandConfigsKey in this.commandConfigs) {
-            if (this.commandConfigs[commandConfigsKey] && Object.keys(this.configFile!).includes(commandConfigsKey)) {
+            if (this.commandConfigs[commandConfigsKey] && allFieldNames.includes(commandConfigsKey)) {
               this.configFile![commandConfigsKey] = this.commandConfigs[commandConfigsKey]
             }
           }
