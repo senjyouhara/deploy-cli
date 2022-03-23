@@ -205,7 +205,7 @@ export default class SshService extends AbstractDeployComponentService {
 
           const commands = i.serverScript
           // 如果指定的服务器目录不存在将进行创建
-          await this.checkServerPathExist(this.config.serverPath)
+          await this.checkServerPathExist(this.config.serverPath!)
           // 上传文件
           await this.uploadLocalFile(i.filePath, this.config.serverPath + '/' + i.fileName + '.zip')
           // 删除本地文件
