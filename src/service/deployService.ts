@@ -71,7 +71,7 @@ export default class DeployService {
 
   readConfigFile() {
     const allFieldNames = platformConfig.map(v => v.name)
-
+    process.chdir(__dirname)
     for (let i in this.configPaths) {
       const fileName = this.configFileNames[i]
       const filePath = this.configPaths[i]
@@ -96,6 +96,7 @@ export default class DeployService {
         process.exit(1)
       }
     }
+    process.chdir(process.cwd())
   }
 
   async run(obj: DeployCommandType) {

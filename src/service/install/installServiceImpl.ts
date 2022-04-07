@@ -47,6 +47,9 @@ export default class InstallServiceImpl extends AbstractDeployComponentService i
     log(`packages: `, packages)
 
     for (const v of packages) {
+      if (v.name === 'root') {
+        continue
+      }
       deployHooksUtils.run('preInstall', this.config!, v)
       CMD.runSync('cd ' + v.path)
       const err = await this.currentService.exec()
