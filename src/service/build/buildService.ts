@@ -154,8 +154,8 @@ export default class BuildService extends AbstractDeployComponentService {
       const results = []
       for (let v of this.runScripts) {
         deployHooksUtils.run('preBuild', this.config, v)
-
-        const { err, data, stderr } = CMD.runSync('cd ' + v.path + ' && ' + v.command)
+        process.chdir(v.path)
+        const { err, data, stderr } = CMD.runSync(v.command)
 
         if (err) {
           error('打包命令执行失败')
