@@ -13,14 +13,15 @@ import externals from 'rollup-plugin-node-externals'
 import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import image from 'rollup-plugin-inline-image'
-import babel from 'rollup-plugin-babel'
+// import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import pkg from './package.json'
 
 const OUTPUT_NAME = pkg.name
 
 const ENVIRONMENT = process.env
-const PRODUCTION = ENVIRONMENT.production || ENVIRONMENT.production === 'true'
+const PRODUCTION = ENVIRONMENT.NODE_ENV === 'production' || ENVIRONMENT.production || ENVIRONMENT.production === 'true'
 
 const formGlobals = {
   'lodash/throttle': 'throttle',
@@ -52,8 +53,15 @@ const EXTERNAL = [
   ...Object.keys(pkg.peerDependencies || {}),
   ...Object.keys(pkg.dependencies || {}),
   'lodash/throttle',
-  'formik',
+  // 'formik',
+  'dayjs',
+  '@babel/core',
   'tslib',
+  'chalk',
+  'ora',
+  'path',
+  'fs',
+  'os'
 ]
 
 const CJS_AND_ES_EXTERNALS = EXTERNAL.concat(/@babel\/runtime/)
@@ -61,8 +69,8 @@ const CJS_AND_ES_EXTERNALS = EXTERNAL.concat(/@babel\/runtime/)
 const PLUGINS = (plugins = {}) => {
   return [
     // PRODUCTION && globals(),
-    // PRODUCTION && builtins(),
-    // PRODUCTION && externals(),
+    PRODUCTION && builtins(),
+    PRODUCTION && externals(),
     resolve({
       jsnext: true, // 该属性是指定将Node包转换为ES2015模块
       main: true,
@@ -97,11 +105,11 @@ const PLUGINS = (plugins = {}) => {
 }
 
 const OUTPUT_DATA = dir => {
-  const umd = {
-    file: `./lib/${dir.replace('.ts', '.js')}`,
-    format: 'umd',
-    dir: 'lib',
-  }
+  // const umd = {
+  //   file: `./lib/${dir.replace('.ts', '.js')}`,
+  //   format: 'umd',
+  //   dir: 'lib',
+  // }
   const cjs = {
     file: `./lib/${dir.replace('.ts', '.js')}`,
     format: 'cjs',
@@ -113,7 +121,11 @@ const OUTPUT_DATA = dir => {
     dir: 'es',
   }
 
-  return [{ ...umd }, { ...es }, { ...cjs }]
+  return [
+    // { ...umd },
+     { ...es }, 
+     { ...cjs }
+    ]
 }
 
 const WATCH = {
@@ -163,7 +175,7 @@ const bundler = (input, output, filter, plugin) => {
     input,
     output: data.map(({ file, format, dir }) => ({
       format,
-      globals: GLOBALS,
+      // globals: GLOBALS,
       exports: 'auto',
       ...output(file, format, dir),
     })),
@@ -184,7 +196,7 @@ const arr = []
 const config = arr.concat.apply(
   [],
   bundler('./src/index.ts', bundlerOutput())
-    .concat(bundler('./src/index.ts', bundlerOutput(true), null, { terser: true }))
+    // .concat(bundler('./src/index.ts', bundlerOutput(true), null, { terser: true }))
     .concat(
       bundler(
         inputAll,
@@ -204,3 +216,50 @@ const config = arr.concat.apply(
 )
 
 export default config
+
+// export default {
+//   // 入口文件
+//   input: inputAll,
+//   output: [
+//     {
+//       format: 'es',
+//       dir: 'es',
+//       sourcemap: false,
+//     },
+//   ],
+//   external: ['@kamisiro/deploy-cli', 'tslib'],
+//   plugins: [
+//     // cleanup(),
+//     resolve({
+//       jsnext: true, // 该属性是指定将Node包转换为ES2015模块
+//       main: true,
+//       browser: false,
+//     }),
+//     commonjs({
+//       include: 'node_modules/**',
+//     }),
+//     babel({
+//       exclude: 'node_modules/**', // 仅仅转译我们的源码
+//       babelHelpers: 'inline',
+//       extensions: ['.js', '.ts'],
+//     }),
+//     json({
+//       include: ['src/**', 'package.json'],
+//     }),
+//     excludeDependenciesFromBundle(),
+//     typescript({
+//       compilerOptions: {
+//         outDir: "es",
+//         declaration: null,
+//         declarationMap: null,
+//       },
+//     }),
+//     // sourcemaps(),
+//     // isProd &&
+//     //   terser({
+//     //     compress: {
+//     //       pure_funcs: ['console.log'], // 去掉console.log函数
+//     //     },
+//     //   }),
+//   ],
+// }
