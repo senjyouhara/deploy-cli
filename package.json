@@ -5,9 +5,9 @@
   "author": {
     "name": "senjyouhara"
   },
-  "main": "dist/bundle.cjs.js",
-  "module": "dist/bundle.es.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "module": "es/index.js",
   "bin": {
     "kamisiro-deploy-cli": "bin/deploy-cli.js"
   },
@@ -31,10 +31,10 @@
   "scripts": {
     "dev": "rimraf lib && cross-env webpack -w",
     "dev:rollup": "rimraf lib && cross-env  isRollup=true rollup -c rollup.config.js",
-    "dist": "rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && cross-env isRollup=true NODE_ENV=development rollup -c rollup.config.js",
-    "dist:build": "rimraf dist && rimraf lib && dts-bundle-generator -o lib/index.d.ts ./src/index.ts && npm run build",
-    "dist:tsc:build": "rimraf es && rimraf lib && tsc --emitDeclarationOnly && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && npm run build:rollup",
+    "dist": "rimraf es && rimraf lib && rimraf dist && npm run build && npm run build:component && npm run build:tsd",
     "build": "cross-env isRollup=true production=true NODE_ENV=development rollup -c rollup.config.js",
+    "build:tsd": "tsc --project tsconfig.json --declaration --emitDeclarationOnly --outDir lib && tsc --project tsconfig.json --declaration --emitDeclarationOnly --outDir es",
+    "build:component": "rimraf es && rimraf lib && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && babel src --out-dir lib --extensions \".js,.ts\"",
     "prepare": "npx husky install && npx husky set .husky/pre-commit \"npx lint-staged --allow-empty\"",
     "lint": "prettier --parser=typescript --write src",
     "lint-staged": "lint-staged"

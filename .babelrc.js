@@ -21,14 +21,14 @@ module.exports = {
     "@babel/preset-typescript"
   ].filter(Boolean),
   plugins: [
-    '@babel/plugin-external-helpers',
-    '@babel/plugin-transform-runtime',
-    // ["module-resolver", {
-    //   "root": ["./"],
-    //   "alias": {
-    //     "@": "@kamisiro/deploy-cli/lib",
-    //   }
-    // }],
+   '@babel/plugin-external-helpers',
+   '@babel/plugin-transform-runtime',
+     ["module-resolver", {
+       "root": ["./"],
+       "alias": {
+         "@": "@kamisiro/deploy-cli/lib",
+       }
+     }],
     ["define-patterns", {
       "replacements": replaceObj
     }],
@@ -39,7 +39,8 @@ module.exports = {
         [
           '@babel/preset-env',
           {
-            modules: 'auto',
+            bugfixes: true,
+            modules: false,
             targets: {
               esmodules: true,
             },
