@@ -21,8 +21,8 @@ module.exports = {
     "@babel/preset-typescript"
   ].filter(Boolean),
   plugins: [
-    // '@babel/plugin-external-helpers',
-    // '@babel/plugin-transform-runtime',
+    '@babel/plugin-external-helpers',
+    '@babel/plugin-transform-runtime',
     // ["module-resolver", {
     //   "root": ["./"],
     //   "alias": {

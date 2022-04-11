@@ -13,8 +13,8 @@ import externals from 'rollup-plugin-node-externals'
 import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import image from 'rollup-plugin-inline-image'
-// import babel from 'rollup-plugin-babel'
-import babel from '@rollup/plugin-babel'
+import babel from 'rollup-plugin-babel'
+// import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import pkg from './package.json'
 
@@ -105,25 +105,26 @@ const PLUGINS = (plugins = {}) => {
 }
 
 const OUTPUT_DATA = dir => {
-  // const umd = {
-  //   file: `./lib/${dir.replace('.ts', '.js')}`,
-  //   format: 'umd',
-  //   dir: 'lib',
-  // }
+  const umd = {
+    name: '@kamisiro/deploy-cli',
+    file: `./lib/${dir.replace('.ts', '.umd.js')}`,
+    format: 'umd',
+    dir: 'dist',
+  }
   const cjs = {
-    file: `./lib/${dir.replace('.ts', '.js')}`,
+    file: `./lib/${dir.replace('.ts', '.cjs.js')}`,
     format: 'cjs',
-    dir: 'cjs',
+    dir: 'dist',
   }
   const es = {
-    file: `./es/${dir.replace('.ts', '.js')}`,
+    file: `./es/${dir.replace('.ts', '.es.js')}`,
     format: 'es',
-    dir: 'es',
+    dir: 'dist',
   }
 
   return [
-    // { ...umd },
-     { ...es }, 
+    { ...umd },
+     { ...es },
      { ...cjs }
     ]
 }
@@ -157,14 +158,14 @@ const _getScanPath = (basePath, fullPath) => {
 }
 
 /** 获取入口文件 */
-const getScanPath = basePath => _getScanPath(basePath, basePath)
-const scanPathList = getScanPath(path.resolve(__dirname, 'src'))
+// const getScanPath = basePath => _getScanPath(basePath, basePath)
+// const scanPathList = getScanPath(path.resolve(__dirname, 'src'))
 // console.log(scanPathList, 'scanPathList')
 
-const inputAll = scanPathList.reduce((t, c) => {
-  t[c.pathName.replace('.ts', '')] = c.path
-  return t
-}, {})
+// const inputAll = scanPathList.reduce((t, c) => {
+//   t[c.pathName.replace('.ts', '')] = c.path
+//   return t
+// }, {})
 
 const bundler = (input, output, filter, plugin) => {
   let data = OUTPUT_DATA('index.ts')
@@ -173,22 +174,23 @@ const bundler = (input, output, filter, plugin) => {
   }
   return [{
     input,
-    output: data.map(({ file, format, dir }) => ({
+    output: data.map(({ file, format, dir, name }) => ({
       format,
-      // globals: GLOBALS,
+      sourcemap: true,
+      name: name || null,
+      globals: GLOBALS,
       exports: 'auto',
       ...output(file, format, dir),
     })),
     watch: WATCH,
     external: EXTERNAL,
-    // external: ['cjs', 'es'].includes(format) ? CJS_AND_ES_EXTERNALS : EXTERNAL,
     plugins: PLUGINS(plugin),
-
+    sourceMap: true,
   }]
 }
 
 const bundlerOutput = isMin => (file, format, dir) => ({
-  file: `${dir}/bundle${isMin ? '.min' : ''}.js`,
+  file: `${dir}/bundle${isMin ? '.min' : ''}.${format}.js`,
   name: OUTPUT_NAME,
 })
 
@@ -196,70 +198,7 @@ const arr = []
 const config = arr.concat.apply(
   [],
   bundler('./src/index.ts', bundlerOutput())
-    // .concat(bundler('./src/index.ts', bundlerOutput(true), null, { terser: true }))
-    .concat(
-      bundler(
-        inputAll,
-        (file, format, dir) => ({ dir }),
-        v => v.format !== 'umd',
-        {
-          typescript: {
-            compilerOptions: {
-              outDir: null,
-              declaration: null,
-              declarationMap: null,
-            },
-          },
-        },
-      ),
-    ),
+    .concat(bundler('./src/index.ts', bundlerOutput(true), null, { terser: true }))
 )
 
 export default config
-
-// export default {
-//   // 入口文件
-//   input: inputAll,
-//   output: [
-//     {
-//       format: 'es',
-//       dir: 'es',
-//       sourcemap: false,
-//     },
-//   ],
-//   external: ['@kamisiro/deploy-cli', 'tslib'],
-//   plugins: [
-//     // cleanup(),
-//     resolve({
-//       jsnext: true, // 该属性是指定将Node包转换为ES2015模块
-//       main: true,
-//       browser: false,
-//     }),
-//     commonjs({
-//       include: 'node_modules/**',
-//     }),
-//     babel({
-//       exclude: 'node_modules/**', // 仅仅转译我们的源码
-//       babelHelpers: 'inline',
-//       extensions: ['.js', '.ts'],
-//     }),
-//     json({
-//       include: ['src/**', 'package.json'],
-//     }),
-//     excludeDependenciesFromBundle(),
-//     typescript({
-//       compilerOptions: {
-//         outDir: "es",
-//         declaration: null,
-//         declarationMap: null,
-//       },
-//     }),
-//     // sourcemaps(),
-//     // isProd &&
-//     //   terser({
-//     //     compress: {
-//     //       pure_funcs: ['console.log'], // 去掉console.log函数
-//     //     },
-//     //   }),
-//   ],
-// }
