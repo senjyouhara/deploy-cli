@@ -47,13 +47,11 @@
   "lint-staged": {
     "src/**/*.{js,jsx,md,json}": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "src/**/*.ts(x)?": [
       "eslint --fix",
-      "prettier --parser=typescript --write",
-      "git add"
+      "prettier --parser=typescript --write"
     ]
   },
   "devDependencies": {
