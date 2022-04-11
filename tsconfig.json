@@ -24,8 +24,7 @@
     "experimentalDecorators": true,
     "strict": true,
     "paths": {
-      "@kamisiro/deploy-cli": ["./src/index.ts"],
-      "@kamisiro/deploy-cli/es/*": ["./src/*"]
+      "@kamisiro/deploy-cli/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],

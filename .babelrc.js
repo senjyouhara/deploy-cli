@@ -22,13 +22,13 @@ module.exports = {
   ].filter(Boolean),
   plugins: [
    '@babel/plugin-external-helpers',
-   '@babel/plugin-transform-runtime',
-     ["module-resolver", {
-       "root": ["./"],
-       "alias": {
-         "@": "@kamisiro/deploy-cli/lib",
-       }
-     }],
+    ['@babel/plugin-transform-runtime'],
+     // ["module-resolver", {
+     //   "root": ["./"],
+     //   "alias": {
+     //     "deploy-lib": "@kamisiro/deploy-cli/lib",
+     //   }
+     // }],
     ["define-patterns", {
       "replacements": replaceObj
     }],
@@ -39,8 +39,8 @@ module.exports = {
         [
           '@babel/preset-env',
           {
-            bugfixes: true,
             modules: false,
+            bugfixes: true,
             targets: {
               esmodules: true,
             },
@@ -48,6 +48,15 @@ module.exports = {
         ],
       ],
       "plugins": [
+        ['@babel/plugin-transform-runtime',{
+          useESModules: true,
+        }],
+        // ["module-resolver", {
+        //   "root": ["./"],
+        //   "alias": {
+        //     "deploy-lib": "@kamisiro/deploy-cli/es",
+        //   }
+        // }],
       ]
     },
   }
