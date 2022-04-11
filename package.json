@@ -33,7 +33,7 @@
     "dev:rollup": "rimraf lib && cross-env  isRollup=true rollup -c rollup.config.js",
     "dist": "rimraf es && rimraf lib && rimraf dist && npm run build && npm run build:component && npm run build:tsd",
     "build": "cross-env isRollup=true production=true NODE_ENV=development rollup -c rollup.config.js",
-    "build:tsd": "tsc --project tsconfig.json --declaration --emitDeclarationOnly --outDir lib && tsc --project tsconfig.json --declaration --emitDeclarationOnly --outDir es",
+    "build:tsd": "tsc --project tsconfig.json --emitDeclarationOnly --outDir lib && tsc --project tsconfig.json --emitDeclarationOnly --outDir es",
     "build:component": "rimraf es && rimraf lib && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && babel src --out-dir lib --extensions \".js,.ts\"",
     "prepare": "npx husky install && npx husky set .husky/pre-commit \"npx lint-staged --allow-empty\"",
     "lint": "prettier --parser=typescript --write src",
