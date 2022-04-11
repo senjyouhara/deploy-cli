@@ -106,7 +106,6 @@ const PLUGINS = (plugins = {}) => {
 
 const OUTPUT_DATA = dir => {
   const umd = {
-    name: '@kamisiro/deploy-cli',
     file: `./lib/${dir.replace('.ts', '.umd.js')}`,
     format: 'umd',
     dir: 'dist',
@@ -177,7 +176,6 @@ const bundler = (input, output, filter, plugin) => {
     output: data.map(({ file, format, dir, name }) => ({
       format,
       sourcemap: true,
-      name: name || null,
       globals: GLOBALS,
       exports: 'auto',
       ...output(file, format, dir),
