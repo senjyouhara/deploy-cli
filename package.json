@@ -5,8 +5,8 @@
   "author": {
     "name": "senjyouhara"
   },
-  "main": "cjs/index.js",
-  "module": "es/index.js",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.es.js",
   "types": "lib/index.d.ts",
   "bin": {
     "kamisiro-deploy-cli": "bin/deploy-cli.js"
