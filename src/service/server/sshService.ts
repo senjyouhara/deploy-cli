@@ -172,13 +172,14 @@ export default class SshService extends AbstractDeployComponentService {
       const find = notAllowedShellScript.find(v => v.test(i))
       if (find) {
         error(`因安全策略限制，无法执行该命令 ${i} , 请修改`)
-        continue
+        process.exit(-1)
       }
       let flag = false
       await this.ssh.execCommand(`${i}`).then(({ stdout, stderr }) => {
         info(`执行脚本输出: ${JSON.stringify(stdout)}`)
         if (stderr) {
           flag = true
+          log(`执行脚本出错: ,`, stderr)
         }
       })
       if (flag) {

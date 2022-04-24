@@ -222,7 +222,7 @@ export default class BuildService extends AbstractDeployComponentService {
           const postScript = Array.isArray(this.config!.postScript)
             ? this.config!.postScript
             : [this.config!.postScript]
-          CMD.runSync('cd ' + v.path)
+          process.chdir(v.path)
           ;(v.postScript.length ? v.postScript : postScript).map(s => {
             succeed(`开始执行后置脚本命令${s}`)
             const { data } = CMD.runSync(s)
