@@ -23,65 +23,53 @@ const OUTPUT_NAME = pkg.name
 const ENVIRONMENT = process.env
 const PRODUCTION = ENVIRONMENT.NODE_ENV === 'production' || ENVIRONMENT.production || ENVIRONMENT.production === 'true'
 
-const formGlobals = {
-  'lodash/throttle': 'throttle',
-  'react-number-format': 'NumberFormat',
-}
-
 const GLOBALS = {
-  react: 'React',
-  'react-dom': 'ReactDOM',
-  'react-router-dom': 'reactRouterDom',
-  'prop-types': 'PropTypes',
-  formik: 'formik',
-  'lodash/throttle': 'throttle',
-  'react-number-format': 'NumberFormat',
-  'react-ga': 'ReactGA',
-  'react-dates': 'ReactDates',
-  'styled-components': 'styled',
-  'react-tag-autocomplete': 'ReactTags',
-  'react-spinkit': 'Spinner',
-  'react-select': 'Select',
-  '@fortawesome/fontawesome-svg-core': 'fontawesomeSvgCore',
-  '@fortawesome/react-fontawesome': 'reactFontawesome',
-  '@fortawesome/pro-regular-svg-icons': 'proRegularSvgIcons',
-  '@fortawesome/free-brands-svg-icons': 'freeBrandsSvgIcons',
-  '@fortawesome/pro-solid-svg-icons': 'proSolidSvgIcons',
+  // react: 'React',
+  // 'react-dom': 'ReactDOM',
+  // 'react-router-dom': 'reactRouterDom',
+  // 'prop-types': 'PropTypes',
+  // 'lodash': 'lodash',
+  // 'react-number-format': 'NumberFormat',
+  // 'react-ga': 'ReactGA',
+  // 'react-dates': 'ReactDates',
+  // 'styled-components': 'styled',
+  // 'react-tag-autocomplete': 'ReactTags',
+  // 'react-spinkit': 'Spinner',
+  // 'react-select': 'Select',
 }
 
 const EXTERNAL = [
-  ...Object.keys(pkg.peerDependencies || {}),
-  ...Object.keys(pkg.dependencies || {}),
-  'lodash/throttle',
-  // 'formik',
+  // ...Object.keys(pkg.peerDependencies || {}),
+  // ...Object.keys(pkg.dependencies || {}),
+  'lodash',
   'dayjs',
   '@babel/core',
+  'node-cmd',
+  'node-ssh',
   'tslib',
   'chalk',
   'ora',
   'path',
   'fs',
+  'vm',
   'os'
 ]
 
-const CJS_AND_ES_EXTERNALS = EXTERNAL.concat(/@babel\/runtime/)
-
-const PLUGINS = (plugins = {}) => {
+const getPlugins = (plugins = {}) => {
   return [
     // PRODUCTION && globals(),
     PRODUCTION && builtins(),
     PRODUCTION && externals(),
     resolve({
-      jsnext: true, // 该属性是指定将Node包转换为ES2015模块
-      main: true,
-      browser: false,
+      // jsnext: true, // 该属性是指定将Node包转换为ES2015模块
+      // main: true,
+      // browser: false,
     }),
     commonjs({
       include: 'node_modules/**',
     }),
     babel({
       exclude: 'node_modules/**', // 仅仅转译我们的源码
-      // babelHelpers: 'runtime',
       runtimeHelpers: true,
       extensions: ['.js', '.ts'],
     }),
@@ -90,7 +78,6 @@ const PLUGINS = (plugins = {}) => {
         include: ['src/**', 'package.json'],
       }),
     // postcss({ extract: plugins.cssPlugin, plugins: [autoprefixer, precss] }),
-    excludeDependenciesFromBundle(),
     typescript(plugins.typescript),
     PRODUCTION && filesize(),
     image(),
@@ -104,7 +91,7 @@ const PLUGINS = (plugins = {}) => {
   ].filter(Boolean)
 }
 
-const OUTPUT_DATA = dir => {
+const getOutputData = dir => {
   const umd = {
     file: `./lib/${dir.replace('.ts', '.umd.js')}`,
     format: 'umd',
@@ -166,8 +153,8 @@ const _getScanPath = (basePath, fullPath) => {
 //   return t
 // }, {})
 
-const bundler = (input, output, filter, plugin) => {
-  let data = OUTPUT_DATA('index.ts')
+const getBundleInfo = (isMin, input, filter, plugin) => {
+  let data = getOutputData('index.ts')
   if (filter) {
     data = data.filter(filter)
   }
@@ -178,25 +165,16 @@ const bundler = (input, output, filter, plugin) => {
       sourcemap: true,
       globals: GLOBALS,
       exports: 'auto',
-      ...output(file, format, dir),
+      file: `${dir}/bundle${isMin ? '.min' : ''}.${format}.js`,
+      name: OUTPUT_NAME,
     })),
     watch: WATCH,
     external: EXTERNAL,
-    plugins: PLUGINS(plugin),
-    sourceMap: true,
+    plugins: getPlugins(plugin),
   }]
 }
 
-const bundlerOutput = isMin => (file, format, dir) => ({
-  file: `${dir}/bundle${isMin ? '.min' : ''}.${format}.js`,
-  name: OUTPUT_NAME,
-})
-
-const arr = []
-const config = arr.concat.apply(
-  [],
-  bundler('./src/index.ts', bundlerOutput())
-    .concat(bundler('./src/index.ts', bundlerOutput(true), null, { terser: true }))
-)
+const config = getBundleInfo(false, './src/index.ts')
+    .concat(getBundleInfo(true, './src/index.ts', null, { terser: true }))
 
 export default config

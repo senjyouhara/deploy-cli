@@ -3,6 +3,7 @@ import minimist from 'minimist'
 import { getVersion, log } from './util'
 import { onProcessEvent } from './process'
 import map from './util/global'
+
 export default class EntryService {
   command: Command = new Command()
   argv: any[] = []

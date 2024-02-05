@@ -11,8 +11,8 @@ import ConfigParseService from './configParse/configParseService'
 import CosServiceImpl from './cos/cosServiceImpl'
 import SshService from './server/sshService'
 import { onProcessEvent } from '../process'
-import { readLocalFile } from '../util/ioUtil'
 import { platformConfig } from '../config/config'
+import { bundleRequire } from 'bundle-require'
 
 export default class DeployService {
   configPaths: string[] = []
@@ -69,7 +69,7 @@ export default class DeployService {
     log(`configFileNames: `, this.configFileNames)
   }
 
-  readConfigFile() {
+  async readConfigFile() {
     const allFieldNames = platformConfig.map(v => v.name)
     const dirPath = process.cwd()
     process.chdir(__dirname)
@@ -79,10 +79,15 @@ export default class DeployService {
       try {
         log(`filePath: `, filePath)
         log(`fileName: `, fileName)
-        const localFile: any = readLocalFile(filePath)
-        log(`localFile: `, localFile)
+
+        const { mod } = await bundleRequire({
+          filepath: filePath,
+          format: 'cjs',
+        })
+
+        log(`localFile: `, mod.default)
         // eslint-disable-next-line no-eval
-        this.configFile = Object.assign({}, this.configFile, localFile.default)
+        this.configFile = Object.assign({}, this.configFile, mod.dfeault)
 
         if (this.commandConfigs) {
           for (let commandConfigsKey in this.commandConfigs) {
@@ -104,7 +109,7 @@ export default class DeployService {
     this.commandConfigs = obj
     onProcessEvent.onProcess()
     this.init(obj)
-    this.readConfigFile()
+    await this.readConfigFile()
 
     deployHooksUtils.run('start', this.configFile!)
 
