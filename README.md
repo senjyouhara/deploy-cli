@@ -6,14 +6,14 @@
 
 
 ## 安装
-`npm i -D @kamisiro/deploy-cli`
+`npm i -D @alice-lib/deploy-cli`
 
 ## 脚手架运行命令行
 
-在命令行通过 kamisiro-deploy-cli -h 可以获取相关帮助信息
+在命令行通过 alice-deploy-cli -h 可以获取相关帮助信息
 
 ```
-Usage: kamisiro-deploy-cli [Options] Or kamisiro-deploy-cli <command> [options]
+Usage: alice-deploy-cli [Options] Or alice-deploy-cli <command> [options]
 Options:
   -v, --version  查询版本号
   -h, --help     显示帮助
@@ -28,20 +28,20 @@ Commands:
 
 ```
 
-`npx kamisiro-deploy-cli -v` 获取版本信息
+`npx alice-deploy-cli -v` 获取版本信息
 
 ### 调用命令
 
 - init 生成部署配置文件
 
-  - `kamisiro-deploy-cli init` 通过控制台进行交互方式生成配置文件
-  - `kamisiro-deploy-cli init -d` 通过默认参数生成配置文件
+  - `alice-deploy-cli init` 通过控制台进行交互方式生成配置文件
+  - `alice-deploy-cli init -d` 通过默认参数生成配置文件
 
 - deploy 执行部署命令
-  - `kamisiro-deploy-cli deploy` 通过加载 deploy.config.js 文件当做配置文件执行部署命令
-  - `kamisiro-deploy-cli deploy --mode=prod` 通过加载 prod.deploy.config.js 文件与 deploy.config.js 文件进行合并处理后当
+  - `alice-deploy-cli deploy` 通过加载 deploy.config.js 文件当做配置文件执行部署命令
+  - `alice-deploy-cli deploy --mode=prod` 通过加载 prod.deploy.config.js 文件与 deploy.config.js 文件进行合并处理后当
     做配置文件执行部署命令
-  - `kamisiro-deploy-cli deploy --mode=prod --host=127.0.0.1 --port=22 --username=root --password=123 --privateKey=key --passphrase=123` 可通过参数注入覆盖配置文件内部的配置
+  - `alice-deploy-cli deploy --mode=prod --host=127.0.0.1 --port=22 --username=root --password=123 --privateKey=key --passphrase=123` 可通过参数注入覆盖配置文件内部的配置
 
 ## 配置文件
 
@@ -161,7 +161,7 @@ interface ConfigOptions {
 example
 ```
 
-更多配置信息请到@kamisiro/deploy-cli/lib/types/type.d.ts里查看
+更多配置信息请到@alice-lib/deploy-cli/lib/types/type.d.ts里查看
 
 module.exports = {
   "projectName": "ant-design-pro",
@@ -195,7 +195,7 @@ example2:
 
 ```
 
-更多配置信息请到@kamisiro/deploy-cli/lib/types/type.d.ts里查看
+更多配置信息请到@alice-lib/deploy-cli/lib/types/type.d.ts里查看
 
 module.exports = {
 	"projectName": "ant-design-pro",
