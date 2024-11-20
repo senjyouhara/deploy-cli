@@ -1,3 +1,3 @@
 #!/usr/bin/env node
-const Service = require('../lib')
-new Service.EntryService(process.argv).run()
+const Service = require('../es2017');
+new Service.EntryService(process.argv).run();

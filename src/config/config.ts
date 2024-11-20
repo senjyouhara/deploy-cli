@@ -1,13 +1,12 @@
-import path from 'path'
-import fs from 'fs'
-import os from 'os'
-import { getFileName, join } from '../util'
-import { ConfigOptions, PathInfoType } from '../types/type'
-import { buildType, runScriptType } from '../service/build/buildService'
-import { error, succeed } from '../util/oraUtil'
+import fs from 'fs';
+import os from 'os';
+import { getFileName, join } from '@/util';
+import { ConfigOptions, PathInfoType } from '@/types/type';
+import { buildType, runScriptType } from '@/service/build/buildService';
+import { error, succeed } from '@/util/oraUtil';
 
 function getUserPackage() {
-  return join(process.cwd(), 'package.json')
+  return join(process.cwd(), 'package.json');
 }
 
 export const platformConfig = [
@@ -22,20 +21,20 @@ export const platformConfig = [
     name: 'platformName',
     message: '环境名称',
     validate(input: string) {
-      const platformName = input.trim()
+      const platformName = input.trim();
       // @ts-ignore
-      var done = this.async()
+      let done = this.async();
       if (
         fs.existsSync(`${join(process.cwd(), getFileName(platformName), '.ts')}`) ||
         fs.existsSync(`${join(process.cwd(), getFileName(platformName), '.js')}`)
       ) {
-        done('该环境的配置文件已存在，请确认')
+        done('该环境的配置文件已存在，请确认');
         setTimeout(() => {
-          process.exit(-1)
-        }, 200)
-        return
+          process.exit(-1);
+        }, 200);
+        return;
       }
-      done(null, true)
+      done(null, true);
     },
   },
   {
@@ -66,10 +65,10 @@ export const platformConfig = [
           input,
         )
       ) {
-        return true
+        return true;
       }
 
-      return 'ip格式不正确'
+      return 'ip格式不正确';
     },
   },
   {
@@ -78,16 +77,16 @@ export const platformConfig = [
     message: '服务器端口号',
     default: 22,
     validate(input: string) {
-      const n = Number(input)
+      const n = Number(input);
       if (isNaN(n)) {
-        return '端口号不正确'
+        return '端口号不正确';
       }
 
       if (!(n >= 1 && n <= 65535)) {
-        return '端口号必须为1-65535这个范围之内'
+        return '端口号必须为1-65535这个范围之内';
       }
 
-      return true
+      return true;
     },
   },
   {
@@ -189,61 +188,61 @@ export const platformConfig = [
     when: () => false,
     message: '执行服务器脚本',
   },
-]
+];
 
 export const deployHooks = [
   {
     start(config: ConfigOptions) {
-      succeed(`项目部署开始 ${config.projectName}`)
+      succeed(`项目部署开始 ${config.projectName}`);
     },
     preInstall(config: ConfigOptions, pack: PathInfoType) {
-      succeed(`开始 ${pack.path} 目录安装依赖 `)
+      succeed(`开始 ${pack.path} 目录安装依赖 `);
     },
     postInstall(config: ConfigOptions, pack: PathInfoType, type: string, success: boolean) {
       if (success) {
-        succeed(`${pack.path} 目录依赖安装完成`)
+        succeed(`${pack.path} 目录依赖安装完成`);
       } else {
-        error(`${pack.path} 目录依赖安装失败`)
+        error(`${pack.path} 目录依赖安装失败`);
       }
     },
     preBuild(config: ConfigOptions, runScript: runScriptType) {
-      succeed(`在 ${runScript.path} 目录开始执行打包命令`)
+      succeed(`在 ${runScript.path} 目录开始执行打包命令`);
     },
     postBuild(config: ConfigOptions, runScript: runScriptType, result: buildType) {
-      succeed(`在 ${runScript.path} 目录编译完成生成压缩文件 ${result.filePath}`)
+      succeed(`在 ${runScript.path} 目录编译完成生成压缩文件 ${result.filePath}`);
     },
     preCos(config: ConfigOptions, uploadData: buildType) {
-      succeed(`${uploadData.fileName}目录文件 开始上传到COS`)
+      succeed(`${uploadData.fileName}目录文件 开始上传到COS`);
     },
     postCos(config: ConfigOptions, uploadData: buildType) {
-      succeed(`${uploadData.fileName}目录文件 上传COS完成`)
+      succeed(`${uploadData.fileName}目录文件 上传COS完成`);
     },
     preConnectServer(config: ConfigOptions) {
-      succeed(`开始连接服务器 ${config.host}:${config.port}`)
+      succeed(`开始连接服务器 ${config.host}:${config.port}`);
     },
     connectServerSuccess(config: ConfigOptions) {
-      succeed(`服务器连接成功 ${config.host}:${config.port}`)
+      succeed(`服务器连接成功 ${config.host}:${config.port}`);
     },
     preDeploy(config: ConfigOptions, buildData: buildType) {
-      succeed(`开始部署 ${buildData.fileName}.zip 到服务器 `)
+      succeed(`开始部署 ${buildData.fileName}.zip 到服务器 `);
     },
     postDeploy(config: ConfigOptions, buildData: buildType, remoteDir: string) {
-      succeed(`部署 ${buildData.fileName}.zip 到服务器完成 部署目录 ${remoteDir}`)
+      succeed(`部署 ${buildData.fileName}.zip 到服务器完成 部署目录 ${remoteDir}`);
     },
     closeServer(config: ConfigOptions) {
-      succeed(`关闭服务器连接 ${config.host}:${config.port}`)
+      succeed(`关闭服务器连接 ${config.host}:${config.port}`);
     },
     finish(config: ConfigOptions) {
-      succeed(`项目部署完成 ${config.projectName}`)
+      succeed(`项目部署完成 ${config.projectName}`);
     },
   },
-]
+];
 
 export const deployHooksUtils = {
   run(keyName: string, ...args: any) {
-    const preFilter = deployHooks.filter(v => Object.keys(v).includes(keyName))
-    preFilter.forEach(v => v[keyName](...args))
+    const preFilter = deployHooks.filter(v => Object.keys(v).includes(keyName));
+    preFilter.forEach(v => v[keyName](...args));
   },
-}
+};
 
-export const defineConfig = (config: ConfigOptions) => config
+export const defineConfig = (config: ConfigOptions) => config;

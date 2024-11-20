@@ -1,4 +1,4 @@
 export default interface IDeployComponentService {
-  exec(): void
-  close(): void
+  exec: () => void;
+  close: () => void;
 }

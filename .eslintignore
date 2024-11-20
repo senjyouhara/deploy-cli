@@ -1,10 +1,12 @@
-/lambda/
-/scripts
-/lib
-/config
-.eslintrc.js
-.history
-public
-dist
-.umi
-mock
+# See https://eslint.org/docs/latest/user-guide/configuring/ignoring-code for more about ignoring files.
+
+node_modules/
+**/*-min.js
+**/*.min.js
+coverage/
+cjs/
+esm/
+es2017/
+dist/
+build/
+tmp/

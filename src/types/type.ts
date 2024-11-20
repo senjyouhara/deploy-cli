@@ -1,79 +1,79 @@
 export interface SshType {
   // 服务器地址
-  host?: string
+  host?: string;
   // 服务器端口号
-  port?: number
+  port?: number;
   // 用户名
-  username?: string
+  username?: string;
   // 密码(和私钥二选一)
-  password?: string
+  password?: string;
   // 本地私钥路径(和密码二选一)
-  privateKey?: string
+  privateKey?: string;
   // 本地私钥密码(如果私钥没设密码留空即可)
-  passphrase?: string
+  passphrase?: string;
 }
 
 export interface CosType {
-  cosType?: 'tencent' | 'aliyun'
+  cosType?: 'tencent' | 'aliyun';
   // cosSecretId(如果填写该项目则为cdn项目)
-  secretId?: string
+  secretId?: string;
   // cosSecretKey(如果填写该项目则为cdn项目)
-  secretKey?: string
+  secretKey?: string;
   // cos桶名称
-  bucket?: string
+  bucket?: string;
   // cos地域
-  region?: string
+  region?: string;
   // cos上传目录
-  cosUploadPath?: string
+  cosUploadPath?: string;
   // 是否上传到cos之前先清除原本目录
-  isRemoveCosFile?: boolean
+  isRemoveCosFile?: boolean;
   // 获取临时密钥函数
-  getTempAuthInfo?: () => CosTempAuthType
+  getTempAuthInfo?: () => CosTempAuthType;
 }
 
 export interface ServerOptionsType {
   // 服务器部署路径
-  serverPath?: string
+  serverPath?: string;
   // 是否备份服务器原文件
-  isBakFile?: boolean
+  isBakFile?: boolean;
   // 备份的文件名
-  bakFileName?: string | ((name: string) => string)
+  bakFileName?: string | ((name: string) => string);
   // 是否部署前先删除服务器原文件
-  isRemoveServerFile?: boolean
+  isRemoveServerFile?: boolean;
   // 在文件部署完成后执行一些服务器脚本
-  serverScript?: string | string[]
+  serverScript?: string | string[];
 }
 
 export interface CosTempAuthType {
-  tmpSecretId: string
-  tmpSecretKey: string
-  expiredTime: number
-  startTime: number
-  token: string
-  region: string
-  bucket: string
+  tmpSecretId: string;
+  tmpSecretKey: string;
+  expiredTime: number;
+  startTime: number;
+  token: string;
+  region: string;
+  bucket: string;
 }
 
-export type PathInfoType = { name: string; path: string }
+export type PathInfoType = { name: string; path: string };
 
 export type ScriptType = {
-  path?: string
-  postScript?: string | string[]
-  serverScript?: string | string[]
-  command: string
-  pattern?: RegExp
-  other?: boolean
-  fileName?(name: string): string
-  exclude?: { path?: string; pattern?: RegExp }[]
-}
+  path?: string;
+  postScript?: string | string[];
+  serverScript?: string | string[];
+  command: string;
+  pattern?: RegExp;
+  other?: boolean;
+  fileName?: (name: string) => string;
+  exclude?: { path?: string; pattern?: RegExp }[];
+};
 
 export interface DeployHooksType {}
 
 export interface ConfigOptions extends SshType, CosType, ServerOptionsType {
   // 项目名称
-  projectName?: string
+  projectName?: string;
   // 环境名称
-  platformName?: string
+  platformName?: string;
   /**
    * 打包命令
    * 为了针对不同项目执行一些定制化打包操作，现制定了打包规则与逻辑
@@ -130,21 +130,21 @@ export interface ConfigOptions extends SshType, CosType, ServerOptionsType {
    * postScript 后置脚本  string | string[] 打包执行完成后执行一些操作,如果和 下方的postScript同时存在 则script的postScript优先级更高
    * serverScript 服务器执行脚本  string | string[] 服务器部署完成后执行一些操作,如果和 下方的serverScript同时存在 则script的serverScript优先级更高
    */
-  script?: string | ScriptType[]
+  script?: string | ScriptType[];
   // 是否调用打包命令前执行npm i 一般用作于ci环境
   // 如果为'npm' | 'yarn' | 'pnpm'  则调用对应的包管理器进行安装
   // 如果为false 则不进行安装  如果为true  则搜索lock文件 通过lock文件对应的包管理器进行安装  否则使用npm进行安装
-  install?: boolean | 'npm' | 'yarn' | 'pnpm'
+  install?: boolean | 'npm' | 'yarn' | 'pnpm';
   // 打包执行完成后后置命令 用于在打包完成后执行一些后置处理什么的
-  postScript?: string | string[]
+  postScript?: string | string[];
   // 本地打包生成目录
-  outputPath?: string
+  outputPath?: string;
 }
 
 export interface DeployCommandType extends ConfigOptions {
-  mode: string
+  mode: string;
 }
 
 export interface InitCommandType {
-  d: boolean
+  d: boolean;
 }

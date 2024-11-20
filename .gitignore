@@ -10,6 +10,9 @@ _roadhog-api-doc
 /dist
 /cjs
 /es
+/esm
+/es2017
+/es2018
 /lib
 /logs
 

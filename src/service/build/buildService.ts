@@ -1,14 +1,14 @@
-import { ConfigOptions, PathInfoType, ScriptType } from '../../types/type'
+import { ConfigOptions, PathInfoType, ScriptType } from '@/types/type'
 // @ts-ignore
 import CMD from 'node-cmd'
 import AbstractDeployComponentService from '../abstractDeployComponentService'
-import { error, info, loading, succeed, underline } from '../../util/oraUtil'
+import { error, info, loading, succeed, underline } from '@/util/oraUtil'
 import fs from 'fs'
 import path from 'path'
 import archiver from 'archiver'
-import { deployHooksUtils } from '../../config/config'
-import { join, log, scanPathList } from '../../util'
-import { deleteFolder } from '../../util/ioUtil'
+import { deployHooksUtils } from '@/config/config'
+import { join, log, scanPathList } from '@/util'
+import { deleteFolder } from '@/util/ioUtil'
 export type runScriptType = {
   path: string
   command: string

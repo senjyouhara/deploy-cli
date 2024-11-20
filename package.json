@@ -1,19 +1,16 @@
 {
   "name": "@alice-lib/deploy-cli",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "前端自动化部署脚手架",
   "author": {
     "name": "senjyouhara"
   },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "module": "es/index.js",
-  "bin": {
-    "alice-deploy-cli": "bin/deploy-cli.js"
-  },
-  "keywords": [
-    "deploy",
-    "部署"
+  "files": [
+    "bin",
+    "esm",
+    "es2017",
+    "cjs",
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -22,21 +19,34 @@
   "bugs": {
     "url": "https://github.com/senjyouhara/deploy-cli/issues"
   },
-  "files": [
-    "bin",
-    "dist",
-    "es",
-    "lib"
-  ],
-  "license": "MIT",
+  "main": "es2017/index.js",
+  "module": "es2017/index.js",
+  "types": "es2017/index.d.ts",
+  "exports": {
+    ".": {
+      "es2017": {
+        "types": "./es2017/index.d.ts",
+        "default": "./es2017/index.js"
+      },
+      "default": {
+        "types": "./es2017/index.d.ts",
+        "default": "./es2017/index.js"
+      }
+    },
+    "./*": "./*"
+  },
+  "bin": {
+    "alice-deploy-cli": "bin/deploy-cli.js"
+  },
   "scripts": {
-    "dev": "rimraf lib && cross-env webpack -w",
-    "dev:rollup": "rimraf lib && cross-env  isRollup=true rollup -c rollup.config.js",
-    "dist": "rimraf es && rimraf lib && rimraf dist && npm run build && npm run build:component && npm run build:tsd",
-    "build": "cross-env isRollup=true production=true NODE_ENV=development rollup -c rollup.config.js",
-    "build:tsd": "tsc --project tsconfig.json --emitDeclarationOnly --outDir lib && tsc --project tsconfig.json --emitDeclarationOnly --outDir es",
-    "build:component": "rimraf es && rimraf lib && cross-env BABEL_ENV=component babel src --out-dir es --extensions \".js,.ts\" && babel src --out-dir lib --extensions \".js,.ts\"",
-    "lint": "prettier --parser=typescript --write src",
+    "start": "ice-pkg start",
+    "build": "ice-pkg build",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx ./",
+    "eslint:fix": "npm run eslint -- --fix",
+    "stylelint": "stylelint \"**/*.{css,scss,less}\"",
+    "prettier": "prettier --write src",
+    "lint": "npm run eslint && npm run stylelint",
     "lint-staged": "lint-staged"
   },
   "husky": {
@@ -54,15 +64,7 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "devDependencies": {
-    "@babel/plugin-external-helpers": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/runtime": "^7.16.0",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.1.3",
-    "@rollup/plugin-typescript": "^8.3.1",
+  "dependencies": {
     "@types/ali-oss": "^6.16.2",
     "@types/archiver": "^5.3.1",
     "@types/inquirer": "^8.1.3",
@@ -70,50 +72,23 @@
     "@types/minimist": "^1.2.2",
     "@types/node": "^14.11.1",
     "@types/node-ssh": "^7.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "autoprefixer": "^10.4.3",
-    "awesome-typescript-loader": "^5.2.1",
-    "babel-loader": "^8.2.3",
-    "babel-plugin-define-patterns": "^1.0.0",
-    "babel-plugin-module-resolver": "^4.1.0",
+    "@swc/helpers": "^0.5.1",
+    "@ice/jsx-runtime": "^0.2.0"
+  },
+  "devDependencies": {
+    "@applint/spec": "^1.2.3",
+    "@ice/pkg": "^1.0.0",
     "cross-env": "^7.0.3",
-    "dts-bundle-generator": "^6.5.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.28.0",
     "husky": "4.3.8",
     "lint-staged": "11.0.0",
     "precss": "^4.0.0",
     "prettier": "^2.1.1",
-    "progress-bar-webpack-plugin": "^2.1.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.18.2",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-cleanup": "^3.2.1",
-    "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.22",
-    "rollup-plugin-filesize": "^9.1.2",
-    "rollup-plugin-inline-image": "^0.1.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-externals": "^4.0.0",
-    "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
-    "terser-webpack-plugin": "^4.2.3",
-    "ts-loader": "^5.2.0",
-    "tslib": "^2.3.1",
     "typescript": "^4.3.0",
-    "webpack": "^4.14.0",
-    "webpack-cli": "^3.0.8",
-    "webpack-node-externals": "^3.0.0"
-  },
-  "dependencies": {
-    "@babel/cli": "^7.16.8",
-    "@babel/core": "^7.16.12",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
     "ali-oss": "^6.17.1",
     "archiver": "5.3.0",
     "axios": "^0.25.0",
@@ -122,8 +97,6 @@
     "commander": "^6.1.0",
     "cos-nodejs-sdk-v5": "^2.11.6",
     "dayjs": "^1.10.7",
-    "esbuild": "^0.20.0",
-    "fs": "0.0.1-security",
     "inquirer": "^7.3.3",
     "joycon": "^3.1.1",
     "js-yaml": "^4.1.0",
@@ -131,6 +104,11 @@
     "node-cmd": "^5.0.0",
     "node-ssh": "^11.0.0",
     "ora": "^5.1.0",
-    "path": "^0.12.7"
-  }
+    "stylelint": "^15.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT"
 }

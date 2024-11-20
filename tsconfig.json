@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
-    "module": "esnext",
-    "target": "es6",
-    "lib": ["esnext", "dom"],
-    "sourceMap": false,
-    "baseUrl": ".",
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "lib": ["es2019", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
     "declaration": true,
     "declarationMap": false,
     "esModuleInterop": true,
@@ -14,19 +19,14 @@
     "strictNullChecks": true,
     "noUnusedParameters": false,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "allowJs": true,
-    "skipLibCheck": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "strict": true,
     "paths": {
-      "@kamisiro/deploy-cli/*": ["./src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "build", "lib", ".eslintrc.js", ".prettierrc.js", "scripts", "config", "jest"]
+  "include": ["src"],
 }
