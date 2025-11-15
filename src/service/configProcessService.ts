@@ -13,7 +13,8 @@ export default class ConfigProcessService {
       .filter(v => v.default instanceof Boolean)
       .map(v => ({ name: v.name }))
       .forEach(v => {
-        if (!answer[v.name]) {
+        if (!answer[v.name as keyof ConfigOptions]) {
+          // @ts-ignore
           answer[v.name] = false;
         }
       });

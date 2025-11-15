@@ -241,6 +241,7 @@ export const deployHooks = [
 export const deployHooksUtils = {
   run(keyName: string, ...args: any) {
     const preFilter = deployHooks.filter(v => Object.keys(v).includes(keyName));
+    // @ts-ignore
     preFilter.forEach(v => v[keyName](...args));
   },
 };

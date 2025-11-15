@@ -65,8 +65,8 @@ export default class DeployCommand implements BaseCommand {
   exec(obj: DeployCommandType) {
     const newObj: any = {};
     Object.keys(this.allowConfigNames).forEach(item => {
-      if (obj[item]) {
-        newObj[item] = obj[item];
+      if (obj[item as keyof DeployCommandType]) {
+        newObj[item] = obj[item as keyof DeployCommandType];
       }
     });
 

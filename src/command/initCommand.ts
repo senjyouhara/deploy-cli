@@ -49,7 +49,7 @@ export default class InitCommand implements BaseCommand {
       return;
     }
 
-    const data = platformConfig.reduce((t, c) => {
+    const data = platformConfig.reduce((t:Record<string, any>, c) => {
       if (!t[c.name]) {
         t[c.name] = c.default || '';
       }

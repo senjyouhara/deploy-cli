@@ -7,8 +7,7 @@
   },
   "files": [
     "bin",
-    "esm",
-    "es2017",
+    "es",
     "cjs",
     "dist"
   ],
@@ -19,28 +18,24 @@
   "bugs": {
     "url": "https://github.com/senjyouhara/deploy-cli/issues"
   },
-  "main": "es2017/index.js",
-  "module": "es2017/index.js",
-  "types": "es2017/index.d.ts",
+  "type": "module",
+  "main": "cjs/index.cjs",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
   "exports": {
     ".": {
-      "es2017": {
-        "types": "./es2017/index.d.ts",
-        "default": "./es2017/index.js"
-      },
-      "default": {
-        "types": "./es2017/index.d.ts",
-        "default": "./es2017/index.js"
-      }
-    },
-    "./*": "./*"
+      "types": "./es/index.d.ts",
+      "import": "./es/index.js",
+      "require": "./cjs/index.cjs"
+    }
   },
   "bin": {
     "alice-deploy-cli": "bin/deploy-cli.js"
   },
   "scripts": {
-    "start": "ice-pkg start",
-    "build": "ice-pkg build",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "prepublishOnly": "npm run build",
     "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx ./",
     "eslint:fix": "npm run eslint -- --fix",
@@ -70,25 +65,11 @@
     "@types/inquirer": "^8.1.3",
     "@types/js-yaml": "^4.0.5",
     "@types/minimist": "^1.2.2",
-    "@types/node": "^14.11.1",
+    "@types/node": "^18.0.0",
     "@types/node-ssh": "^7.0.1",
-    "@swc/helpers": "^0.5.1",
-    "@ice/jsx-runtime": "^0.2.0"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@applint/spec": "^1.2.3",
-    "@ice/pkg": "^1.0.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.0.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "husky": "4.3.8",
-    "lint-staged": "11.0.0",
-    "precss": "^4.0.0",
-    "prettier": "^2.1.1",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.3.0",
     "ali-oss": "^6.17.1",
     "archiver": "5.3.0",
     "axios": "^0.25.0",
@@ -96,15 +77,29 @@
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "cos-nodejs-sdk-v5": "^2.11.6",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.10.7",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "fast-glob": "^3.3.3",
+    "husky": "4.3.8",
     "inquirer": "^7.3.3",
     "joycon": "^3.1.1",
     "js-yaml": "^4.1.0",
+    "lint-staged": "11.0.0",
     "minimist": "^1.2.5",
     "node-cmd": "^5.0.0",
     "node-ssh": "^11.0.0",
     "ora": "^5.1.0",
-    "stylelint": "^15.0.0"
+    "precss": "^4.0.0",
+    "prettier": "^2.1.1",
+    "rimraf": "^3.0.2",
+    "stylelint": "^15.0.0",
+    "vite": "^6.4.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "publishConfig": {
     "access": "public",

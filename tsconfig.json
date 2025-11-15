@@ -3,7 +3,6 @@
     "module": "ESNext",
     "target": "ESNext",
     "jsx": "react",
-    "moduleResolution": "node",
     "lib": ["es2019", "DOM", "DOM.Iterable"],
     "allowJs": true,
     "noUnusedLocals": false,
@@ -20,10 +19,12 @@
     "noUnusedParameters": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "allowImportingTsExtensions": false,
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "strict": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

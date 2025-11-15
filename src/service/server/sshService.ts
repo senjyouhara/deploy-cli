@@ -1,6 +1,6 @@
 import AbstractDeployComponentService from '../abstractDeployComponentService';
 import { ConfigOptions, ServerOptionsType, SshType } from '@/types/type';
-import { NodeSSH } from 'node-ssh';
+import SSH from 'node-ssh';
 import { error, info, loading, succeed, underline } from '@/util/oraUtil';
 import * as fs from 'fs';
 import { buildType } from '../build/buildService';
@@ -17,10 +17,10 @@ interface configError {
 
 export default class SshService extends AbstractDeployComponentService {
   config: ConfigOptions | null = null;
-  ssh: NodeSSH;
+  ssh: SSH;
   constructor() {
     super();
-    this.ssh = new NodeSSH();
+    this.ssh = new SSH();
   }
   checkConfig(config: ConfigOptions): { flag: boolean; data: any } {
     if (config) {
@@ -92,7 +92,7 @@ export default class SshService extends AbstractDeployComponentService {
       const spinner = ora('正在上传中\n').start();
 
       await this.ssh
-        .putFile(localFileName, remoteFileName, null, {
+        .putFile(localFileName, remoteFileName, undefined, {
           concurrency: 1,
         })
         .then(null, err => {
@@ -193,7 +193,7 @@ export default class SshService extends AbstractDeployComponentService {
       try {
         deployHooksUtils.run('preConnectServer', this.config);
 
-        await this.ssh.connect({ ...this.config });
+        await this.ssh.connect({ ...this.config } as SshType);
 
         deployHooksUtils.run('connectServerSuccess', this.config!);
 

@@ -1,10 +1,10 @@
 export interface SshType {
   // 服务器地址
-  host?: string;
+  host: string;
   // 服务器端口号
-  port?: number;
+  port: number;
   // 用户名
-  username?: string;
+  username: string;
   // 密码(和私钥二选一)
   password?: string;
   // 本地私钥路径(和密码二选一)
