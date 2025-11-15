@@ -5,8 +5,7 @@ node_modules/
 **/*.min.js
 coverage/
 cjs/
-esm/
-es2017/
+es/
 dist/
 build/
 tmp/

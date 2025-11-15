@@ -3,6 +3,8 @@ package.json
 .umi
 .umi-production
 /dist
+/es
+/cjs
 /lib
 .dockerignore
 .DS_Store

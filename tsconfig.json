@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "ESNext",
+    "target": "ES2019",
     "jsx": "react",
-    "lib": ["es2019", "DOM", "DOM.Iterable"],
+    "lib": ["es2019"],
     "allowJs": true,
     "noUnusedLocals": false,
     "noImplicitReturns": true,
@@ -20,7 +20,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": false,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "strict": true,
